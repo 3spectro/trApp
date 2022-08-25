@@ -1,0 +1,39 @@
+<div class="row justify-content-center">
+  <div class="col-11 g-2">
+    <div class="card">
+      <div class="card-header">
+        <h2>Details</h2>
+      </div>
+      <div class="card">
+        <div class="row">
+          <!--<google-map
+                    [width]="750"
+                    [height]="750"
+                    [center]="center"
+                    [zoom]="zoom">
+              <map-marker *ngFor="let markerPosition of markerPositions"
+                      [position]="markerPosition"
+                      [options]="markerOptions">
+              </map-marker>
+              <map-polyline [path]="vertices"></map-polyline>
+            </google-map>-->
+            <google-map height="400px"
+                        width="750px"
+                        [center]="center"
+                        [zoom]="zoom">
+              <map-bicycling-layer></map-bicycling-layer>
+              <map-directions-renderer *ngIf="(directionsResults$ | async) as directionsResults"
+                                      [directions]="directionsResults"></map-directions-renderer>
+            </google-map>
+        </div>
+        <div class="row">
+          <div class="accordion" id="accordionPanelsStayOpenExample">
+            <app-itinerary></app-itinerary>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

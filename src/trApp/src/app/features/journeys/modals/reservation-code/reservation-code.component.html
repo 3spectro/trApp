@@ -1,0 +1,27 @@
+<!--<div class="modal fade" id="reservationCodeModal" tabindex="-1" aria-labelledby="reservationCodeModalLabel" aria-hidden="true">-->
+<div class="modal fade" id="reservationCodeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="reservationCodeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reservationCodeModalLabel">Reservation Code!</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="close.emit()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon3">{{application}}</span>
+          <input type="text" class="form-control" aria-label="Reservation code" aria-describedby="basic-addon2" [value]="code" disabled readonly>
+          <span class="input-group-text" id="basic-addon2">
+            <button class="btn" (click)="copyToClipboard()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-files btn-sm" viewBox="0 0 16 16">
+                <path d="M13 0H6a2 2 0 0 0-2 2 2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm0 13V4a2 2 0 0 0-2-2H5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1zM3 4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4z"/>
+              </svg>
+            </button>
+          </span>
+        </div>
+      </div>
+      <div class="modal-footer text-center">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" (click)="close.emit()">Done</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<app-loading-bar></app-loading-bar>
+<ng-container *ngIf="isLoged$ | async">
+  <div class="row justify-content-center">
+    <div class="col-9">
+      <app-navbar></app-navbar>
+    </div>
+    <div class="col-9 mainRouter g-2">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</ng-container>
+<ng-container *ngIf="!(isLoged$ | async)">
+  <app-login></app-login>
+</ng-container>
+
+

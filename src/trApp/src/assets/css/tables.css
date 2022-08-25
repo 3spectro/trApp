@@ -1,0 +1,9 @@
+.table-buttons > td > button.btn-sm {
+  display: none;
+}
+
+.table-buttons:hover > td > button.btn-sm {
+  display: block;
+  float: right;
+  margin-left: 5px;
+}

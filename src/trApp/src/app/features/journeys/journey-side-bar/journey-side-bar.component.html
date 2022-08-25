@@ -1,0 +1,60 @@
+<div class="offcanvas offcanvas-end" tabindex="-1" id="sideBar" aria-labelledby="sideBarLabel">
+  <div class="offcanvas-header border-bottom border-secondary">
+    <h4 class="offcanvas-title" id="sideBarLabel">Travel</h4>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" #close></button>
+  </div>
+  <div class="offcanvas-body ">
+    <div>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input type="text" class="form-control" id="name" required formControlName="name" name="name" [ngClass]="getValidationClass(form.get('name'))">
+          <div class="valid-feedback" style="display: block;" *ngIf="form.get('name')?.touched && form.get('name')?.valid">
+            Looks good!
+          </div>
+          <div class="invalid-feedback" style="display: block;" *ngIf="form.get('name')?.touched && form.get('name')?.errors?.['required']">
+            This field is required
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="startDate" class="form-label">Start Date</label>
+          <input type="date" class="form-control" id="startDate" formControlName="startDate" name="startDate" [ngClass]="getValidationClass(form.get('startDate'))">
+          <div class="valid-feedback" style="display: block;" *ngIf="form.get('startDate')?.touched && form.get('startDate')?.value && form.get('startDate')?.valid">
+            Looks good!
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="endDate" class="form-label">End Date</label>
+          <input type="date" class="form-control" id="endDate" formControlName="endDate" name="endDate" [ngClass]="getValidationClass(form.get('endDate'))">
+          <div class="valid-feedback" style="display: block;" *ngIf="form.get('endDate')?.touched && form.get('endDate')?.value && form.get('endDate')?.valid">
+            Looks good!
+          </div>
+        </div>
+        <div class="mb-3">
+          <h5 class="offcanvas-title" id="sideBarLabel">Travelers</h5>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col" [width]="50"> Sel.</th>
+                <th scope="col">Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let guest of guests">
+                <th scope="row" [width]="50">
+                  <input type="checkbox">
+                </th>
+                <td>{{guest.lastName}}, {{guest.firstName}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="text-end">
+          <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+

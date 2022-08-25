@@ -1,0 +1,5 @@
+tbody tr.high-light{
+  animation-name: high-light;
+  animation-duration: 2s;
+  background-color:rgba(224, 141, 60, 0.5);
+}

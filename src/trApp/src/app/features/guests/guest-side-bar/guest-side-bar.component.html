@@ -1,0 +1,66 @@
+<div class="offcanvas offcanvas-end" tabindex="-1" id="sideBar" aria-labelledby="sideBarLabel">
+  <div class="offcanvas-header border-bottom border-secondary">
+    <h4 class="offcanvas-title" id="sideBarLabel">Application</h4>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" #close></button>
+  </div>
+  <div class="offcanvas-body ">
+    <div>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="firstName" class="form-label">First Name</label>
+          <input type="text" class="form-control" id="firstName" required formControlName="firstName" name="firstName" [ngClass]="getValidationClass(form.get('firstName'))">
+          <div class="valid-feedback" style="display: block;" *ngIf="form.get('firstName')?.touched && form.get('firstName')?.valid">
+            Looks good!
+          </div>
+          <div class="invalid-feedback" style="display: block;" *ngIf="form.get('firstName')?.touched && form.get('firstName')?.errors?.['required']">
+            This field is required
+          </div>
+          <div class="invalid-feedback" style="display: block;" *ngIf="form.get('firstName')?.touched && form.get('firstName')?.errors?.['incorrect']">
+            {{form.get('firstName')?.errors?.['message']}}
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="lastName" class="form-label">Last Name</label>
+          <input type="url" class="form-control" id="lastName" required formControlName="lastName" name="lastName" [ngClass]="getValidationClass(form.get('lastName'))">
+          <div class="valid-feedback" style="display: block;" *ngIf="form.get('lastName')?.touched && form.get('lastName')?.valid">
+            Looks good!
+          </div>
+          <div class="invalid-feedback" style="display: block;" *ngIf="form.get('lastName')?.touched && form.get('lastName')?.errors?.['required']">
+            This field is required
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="passport" class="form-label">Passport</label>
+          <input type="url" class="form-control" id="passport" formControlName="passport" name="passport" [ngClass]="getValidationClass(form.get('passport'))">
+          <div class="valid-feedback" style="display: block;" *ngIf="form.get('passport')?.touched && form.get('passport')?.value && form.get('passport')?.valid">
+            Looks good!
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" formControlName="email" name="email" [ngClass]="getValidationClass(form.get('email'))">
+          <div class="valid-feedback" style="display: block;" *ngIf="form.get('email')?.touched && form.get('email')?.value && form.get('email')?.valid">
+            Looks good!
+          </div>
+          <div class="invalid-feedback" style="display: block;" *ngIf="form.get('email')?.touched && form.get('email')?.errors?.['required']">
+            This field is required
+          </div>
+          <div class="invalid-feedback" style="display: block;" *ngIf="form.get('email')?.touched && form.get('email')?.errors?.['pattern']">
+            Invalid format for an email
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="celPhone" class="form-label">Cel Phone</label>
+          <input type="text" class="form-control" id="celPhone" formControlName="celPhone" name="celPhone" [ngClass]="getValidationClass(form.get('celPhone'))">
+          <div class="valid-feedback" style="display: block;" *ngIf="form.get('celPhone')?.touched && form.get('celPhone')?.value && form.get('celPhone')?.valid">
+            Looks good!
+          </div>
+        </div>
+        <div class="text-end">
+          <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
