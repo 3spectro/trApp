@@ -10,7 +10,9 @@
   </div>
 </ng-container>
 <ng-container *ngIf="!(isLoged$ | async)">
-  <app-login></app-login>
+  <div style="background-color: gainsboro">
+    <router-outlet></router-outlet>
+  </div>
 </ng-container>
 
 

@@ -1,5 +1,10 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, of, Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { IApiResponse } from '../domain/core.entity';
+import { environment } from './../../../environments/environment';
+
+const URL = `${environment.apiBaseUrl}Auth`;
 
 @Injectable({
   providedIn: 'root'
@@ -7,42 +12,54 @@ import { BehaviorSubject, of, Observable } from 'rxjs';
 export class AuthService {
   user!: IUser;
 
-  user$ = new BehaviorSubject<IUser>({
-    isLogged: false
-  });
+  user$ = new BehaviorSubject<boolean>(false);
 
-  constructor() { }
+  constructor(
+    private readonly http: HttpClient
+  ) { }
 
-  validate() {
-    this.user$.next({
-      isLogged: true
+  login(username: string, password: string): Observable<boolean> {
+    return new Observable<boolean>((observer) => {
+      this.http.post<IApiResponse<IUser>>(URL + '/login', { username, password }).subscribe(response => {
+        debugger;
+        if (response.value && response.value.token) {
+          this.user = response.value;
+          localStorage.setItem('user', JSON.stringify(this.user));
+          this.user$.next(true);
+          observer.next(true);
+        } else {
+          this.user = {};
+          this.user$.next(false);
+          observer.next(false);
+        }
+        observer.complete();
+      });
     });
   }
 
-  login(username: string, password: string): Observable<boolean> {
-    if (username === 'esteban' && password === 'abc') {
-      this.user$.next({
-        isLogged: true
-      });
-      return of(true);
-    } else {
-      this.user$.next({
-        isLogged: false
-      });
-      return of(false);
+  validate(): Observable<boolean> {
+    this.setAuthToken();
+    return this.http.get<boolean>(URL + '/validate');
+  }
+
+  private setAuthToken(): void {
+    if (!this.user?.token) {
+      const lsUser = localStorage.getItem('user');
+      if (lsUser) {
+        this.user = JSON.parse(lsUser) as IUser;
+      }
     }
   }
 
   logout() {
-    this.user$.next({
-      isLogged: false
-    });
+    this.user = {};
+    localStorage.removeItem('user');
+    this.user$.next(false);
   }
 }
 
 export interface IUser {
-  name?: string;
-  userName?: string;
+  firstName?: string;
+  lastName?: string;
   token?: string;
-  isLogged: boolean;
 }

@@ -1,6 +1,7 @@
-import { AuthService } from './../shared/services/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { AuthService } from '../shared/services/auth.service';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +13,7 @@ export class LoginComponent implements OnInit {
   password!: string;
 
   constructor(
+    private readonly toastrService: ToastrService,
     private readonly authService: AuthService,
     private readonly router: Router
   ) { }
@@ -19,10 +21,13 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  login() {
+  login () {
     this.authService.login(this.username, this.password).subscribe(x => {
-      this.router.navigate(['applications']);
+      if (x) {
+        this.router.navigate(['journeys']);
+      } else {
+        this.toastrService.error('User or password incorect');
+      }
     });
   }
-
 }

@@ -1,4 +1,4 @@
-import { MessagesService } from './../../../shared/services/messages.service';
+import { MessagesService } from 'src/app/shared/services/messages.service';
 import { ToastrService } from 'ngx-toastr';
 import { IApplication, ApplicationsService } from 'src/app/shared/services/applications.service';
 import { Component, OnInit } from '@angular/core';
@@ -20,9 +20,7 @@ export class IndexComponent implements OnInit {
 
   ngOnInit(): void {
     this.applicationsService.get$().subscribe(res =>{
-      if (res.status === 200) {
-        this.applications = res.value;
-      }
+      this.applications = res.value;
     });
   }
 
@@ -45,13 +43,6 @@ export class IndexComponent implements OnInit {
   }
 
   newApplication(app: IApplication) {
-    this.applicationsService.save$(app).subscribe(response => {
-      if (response.status === 201) {
-        this.applications?.push(response.value);
-        this.toastr.success(this.messagesService.getDeleteMessage('Application'));
-      } else {
-        alert(response.message);
-      }
-    });
+    this.applications?.push(app);
   }
 }

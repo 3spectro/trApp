@@ -93,7 +93,7 @@ export class EventsService {
     timer(1000).subscribe(() => this.loadingBarService.hidde());
     return of({
       status: 200,
-      message: 'success',
+      message: undefined,
       value: this.items,
     });
   }
@@ -104,7 +104,7 @@ export class EventsService {
     this.items = this.items.filter(x => x.id !== id);
     return of({
       status: 200,
-      message: 'success',
+      message: undefined,
       value: null
     });
   }
@@ -116,7 +116,7 @@ export class EventsService {
     this.items[index] = item;
     return of({
       status: 200,
-      message: 'success',
+      message: undefined,
       value: item,
     });
   }
@@ -126,7 +126,7 @@ export class EventsService {
     timer(1000).subscribe(() => this.loadingBarService.hidde());
     const response: IApiResponse<IEvent> = {
       status: 201,
-      message: 'success',
+      message: undefined,
       value: {} as IEvent,
     }
     item.id = this.items.length;

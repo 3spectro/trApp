@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32819.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrApi", "TrApi\TrApi.csproj", "{BB67CA66-4E8F-47BF-92C5-3D635D0F1A57}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BB67CA66-4E8F-47BF-92C5-3D635D0F1A57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB67CA66-4E8F-47BF-92C5-3D635D0F1A57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB67CA66-4E8F-47BF-92C5-3D635D0F1A57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB67CA66-4E8F-47BF-92C5-3D635D0F1A57}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {69AC9E3A-1FBD-40FA-83F7-D83EA9EDB2E2}
+	EndGlobalSection
+EndGlobal

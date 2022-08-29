@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
   constructor(
     private readonly auth: AuthService
   ) {
-    this.isLoged$ = this.auth.user$.pipe(map(x => x.isLogged));
+    this.isLoged$ = this.auth.user$;
   }
 
   ngOnInit(): void {

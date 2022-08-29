@@ -6,13 +6,19 @@ import { Injectable } from '@angular/core';
 })
 export class LoadingBarService {
 
+  private count = 0;
   showLoadingBar$ = new Subject<boolean>();
 
   show() {
+    this.count ++;
     this.showLoadingBar$.next(true);
   }
 
   hidde() {
-    this.showLoadingBar$.next(false);
+    this.count--;
+    if (this.count <= 0) {
+      this.showLoadingBar$.next(false);
+      this.count = 0;
+    }
   }
 }

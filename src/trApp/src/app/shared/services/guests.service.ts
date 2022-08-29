@@ -44,7 +44,7 @@ export class GuestsService {
     timer(1000).subscribe(() => this.loadingBarService.hidde());
     return of({
       status: 200,
-      message: 'success',
+      message: undefined,
       value: this.items,
     });
   }
@@ -55,7 +55,7 @@ export class GuestsService {
     this.items = this.items.filter(x => x.id !== id);
     return of({
       status: 200,
-      message: 'success',
+      message: undefined,
       value: null
     });
   }
@@ -67,7 +67,7 @@ export class GuestsService {
     this.items[index] = item;
     return of({
       status: 200,
-      message: 'success',
+      message: undefined,
       value: item,
     });
   }
@@ -77,12 +77,12 @@ export class GuestsService {
     timer(1000).subscribe(() => this.loadingBarService.hidde());
     const response: IApiResponse<IGuest> = {
       status: 201,
-      message: 'success',
+      message: undefined,
       value: {} as IGuest,
     }
     if (this.items.filter(x => x.passport === item.passport).length > 0) {
       response.status = 422;
-      response.message = `There are another application with this passport: ${item.passport}`;
+      // response.message = `There are another application with this passport: ${item.passport}`;
     } else {
       item.id = this.items.length;
       response.value = item;

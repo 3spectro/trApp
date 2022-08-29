@@ -1,85 +1,46 @@
-import { LoadingBarService } from './loading-bar.service';
+import { IGenericResponse } from './../domain/core.entity';
+import { HttpClient } from '@angular/common/http';
+import { environment } from './../../../environments/environment';
 import { Injectable } from '@angular/core';
-import { of, Observable, timer } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { IApiResponse } from '../domain/core.entity';
+
+const URL = `${environment.apiBaseUrl}Applications`;
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApplicationsService {
 
-  items: IApplication[] = [
-    {
-      id: 1,
-      name: 'Booking',
-      url: 'https://www.booking.com/'
-    },
-    {
-      id: 2,
-      name: 'Arbnb',
-      url: 'https://www.airbnb.com.ar/'
-    },
-    {
-      id: 3,
-      name: 'Despegar',
-      url: 'https://www.despegar.com.ar/'
-    }
-  ];
+  items: IApplication[] = [];
 
   constructor(
-    private readonly loadingBarService: LoadingBarService
+    private readonly http: HttpClient
   ) { }
 
   get$ = (): Observable<IApiResponse<IApplication[]>> => {
-    this.loadingBarService.show();
-    timer(1000).subscribe(() => this.loadingBarService.hidde());
-    return of({
-      status: 200,
-      message: 'success',
-      value: this.items,
-    });
+    return this.http.get<IApiResponse<IApplication[]>>(URL);
   }
 
-  delete$ = (id: number): Observable<IApiResponse<null>> => {
-    this.loadingBarService.show();
-    timer(1000).subscribe(() => this.loadingBarService.hidde());
-    this.items = this.items.filter(x => x.id !== id);
-    return of({
-      status: 200,
-      message: 'success',
-      value: null
-    });
+  delete$ = (id: number): Observable<IApiResponse<boolean>> => {
+    return this.http.delete<IApiResponse<boolean>>(URL, { body: { id: id}});
   }
 
-  update$ = (item: IApplication): Observable<IApiResponse<IApplication>> => {
-    this.loadingBarService.show();
-    timer(1000).subscribe(() => this.loadingBarService.hidde());
-    const index = this.items.findIndex(x => x.id === item.id);
-    this.items[index] = item;
-    return of({
-      status: 200,
-      message: 'success',
-      value: item,
-    });
+  update$ = (item: IApplication): Observable<IApiResponse<boolean>> => {
+    return this.http.put<IApiResponse<boolean>>(URL, item);
   }
 
-  save$ = (item: IApplication): Observable<IApiResponse<IApplication>> => {
-    this.loadingBarService.show();
-    timer(1000).subscribe(() => this.loadingBarService.hidde());
-    const response: IApiResponse<IApplication> = {
-      status: 201,
-      message: 'success',
-      value: {} as IApplication,
-    }
-    if (this.items.filter(x => x.name === item.name).length > 0) {
-      response.status = 422;
-      response.message = `There are another application with this name: ${item.name}`;
-    } else {
-      item.id = this.items.length;
-      this.items.push(item);
-      response.value = item;
-    }
-    return of(response);
+  save$ = (item: IApplication): Observable<IGenericResponse<number>> => {
+    return this.http.post<IApiResponse<number>>(URL, item).pipe(
+      map(resp => {
+        debugger;
+        return {
+          status: resp.status === 201,
+          message: resp.status === 201 ? undefined : resp.message,
+          value: resp.value
+        };
+      })
+    );
   }
 }
 

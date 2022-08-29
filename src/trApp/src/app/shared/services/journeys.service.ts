@@ -45,7 +45,7 @@ export class JourneysService {
     timer(1000).subscribe(() => this.loadingBarService.hidde());
     return of({
       status: 200,
-      message: 'success',
+      message: undefined,
       value: this.items,
     });
   }
@@ -56,7 +56,7 @@ export class JourneysService {
     this.items = this.items.filter(x => x.id !== id);
     return of({
       status: 200,
-      message: 'success',
+      message: undefined,
       value: null
     });
   }
@@ -68,7 +68,7 @@ export class JourneysService {
     this.items[index] = item;
     return of({
       status: 200,
-      message: 'success',
+      message: undefined,
       value: item,
     });
   }
@@ -78,7 +78,7 @@ export class JourneysService {
     timer(1000).subscribe(() => this.loadingBarService.hidde());
     const response: IApiResponse<IJourney> = {
       status: 201,
-      message: 'success',
+      message: undefined,
       value: {} as IJourney,
     }
     item.id = this.items.length;
