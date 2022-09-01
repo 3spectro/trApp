@@ -1,9 +1,9 @@
 <div class="offcanvas offcanvas-end" tabindex="-1" id="appSideBar" aria-labelledby="appSideBarLabel">
   <div class="offcanvas-header border-bottom border-secondary">
     <h4 class="offcanvas-title" id="appSideBarLabel">Application</h4>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" #close></button>
   </div>
-  <div class="offcanvas-body ">
+  <div class="offcanvas-body">
     <div>
       <form [formGroup]="applicationForm" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
         <div class="mb-3">
@@ -31,8 +31,12 @@
           <div class="invalid-feedback" style="display: block;" *ngIf="applicationForm.get('url')?.touched && applicationForm.get('url')?.errors?.['pattern']">
             This field is an url. ex. https://www.google.com
           </div>
+          <div class="invalid-feedback" style="display: block;" *ngIf="applicationForm.get('url')?.touched && applicationForm.get('url')?.errors?.['incorrect']">
+            {{applicationForm.get('url')?.errors?.['message']}}
+          </div>
         </div>
         <div class="text-end">
+          <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="offcanvas" aria-label="Close">Close</button>
           <button type="submit" class="btn btn-primary" [disabled]="applicationForm.invalid">Save</button>
         </div>
       </form>

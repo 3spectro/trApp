@@ -5,7 +5,7 @@ namespace TrApi.Queries.Interfaces
   public interface IAuthQueries
   {
 
-    Task<IApiResponse<LoginResponse>> Login(LoquinRequest request);
+    Task<IApiResponse<LoginResponse>> Login(LoginRequest request);
 
     bool ValidateToken(string tokenString);
   }

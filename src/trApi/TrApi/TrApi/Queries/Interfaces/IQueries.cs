@@ -2,15 +2,15 @@
 
 namespace TrApi.Queries.Interfaces
 {
-  public interface IQueries<T> where T : IBaseModel
+  public interface IQueries<T, D> where T : IModel where D : IEntity
   {
 
     Task<IApiResponse<IEnumerable<T>>> GetAllAsync();
 
-    Task<IApiResponse<int>> Insert(T model);
+    Task<IApiResponse<int>> InsertAsync(D entity);
 
-    Task<IApiResponse<bool>> Update(T model);
+    Task<IApiResponse<int>> UpdateAsync(int id, D enity);
 
-    Task<IApiResponse<bool>> Delete(int id);
+    Task<IApiResponse<bool>> DeleteAsync(int id);
   }
 }

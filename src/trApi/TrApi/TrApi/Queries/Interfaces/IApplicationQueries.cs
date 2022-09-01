@@ -2,7 +2,7 @@
 
 namespace TrApi.Queries.Interfaces
 {
-  public interface IApplicationQueries : IQueries<Application>
+  public interface IApplicationQueries : IQueries<ApplicationModel, ApplicationEntity>
   {
   }
 }

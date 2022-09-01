@@ -1,4 +1,6 @@
-﻿using TrApi.Models;
+﻿using System;
+using TrApi.Enums;
+using TrApi.Models;
 using TrApi.Queries.Interfaces;
 
 namespace TrApi.Queries.Services
@@ -13,70 +15,44 @@ namespace TrApi.Queries.Services
       this._context = context;
     }
 
-    public async Task<IApiResponse<IEnumerable<Application>>> GetAllAsync()
+    public async Task<IApiResponse<bool>> DeleteAsync(int id)
     {
-      var res = new IApiResponse<IEnumerable<Application>>
+      var entity = _context.Applications.Where(app => app.Id == id).First();
+      var res = IApiResponse<bool>.GetDefault(Actions.DELETE);
+      if (entity != null)
       {
-        Status = 200,
-        Message = null,
-        Value = await _context.Applications.ToListAsync()
-      };
+        _context.Applications.Remove(entity);
+        await _context.SaveChangesAsync();
+      }
+      else
+        res.SetNotFound();
       return res;
     }
 
-    public async Task<IApiResponse<int>> Insert(Application model)
+    public async Task<IApiResponse<IEnumerable<ApplicationModel>>> GetAllAsync()
+    {
+      var res = IApiResponse<IEnumerable<ApplicationModel>>.GetDefault(Actions.GET);
+      var list = await _context.Applications.Where(x => x.UserId == 3).ToListAsync();
+      res.Value = (IEnumerable<ApplicationModel>)list;
+      return res;
+    }
+
+    public async Task<IApiResponse<int>> InsertAsync(ApplicationEntity entity)
     {
       try
       {
-        var resp = this.isValidModel(model);
-        if (resp.Status == 201)
+        var items = await _context.Applications.Where(item => item.UserId == 3).ToListAsync();
+        var resp = IsValidModel(items, entity, Actions.CREATE);
+        if (resp.Status == resp.StatusOk)
         {
-          var insert = _context.Applications.Add(model);
+          // TODO: PUT THE USER ID GETTING FROM CLAIMS
+          entity.UserId = 3;
+          var insert = _context.Applications.Add(entity);
           await _context.SaveChangesAsync();
           var app = insert.Entity;
           resp.Value = app.Id;
         }
         return resp;
-      }
-      catch(Exception ex)
-      {
-        string text = ex.Message;
-        throw ex;
-      }
-    }
-
-    public async Task<IApiResponse<bool>> Update(Application model)
-    {
-      try
-      {
-        IApiResponse<bool> res;
-        var isValidModel = (await _context.Applications
-                            .Where(app => app.Id != model.Id &&
-                                          (app.Name.ToString().ToLower() == model.Name.ToString().ToLower() ||
-                                           app.Url.ToString().ToLower() == model.Url.ToString().ToLower())).ToListAsync()).Count() > 0;
-        if (isValidModel)
-        {
-          res = new IApiResponse<bool>
-          {
-            Status = 422,
-            Message = null,// "There is already an application with the same name or url",
-            Value = false
-          };
-        }
-        else
-        {
-          var insert = _context.Applications.Add(model);
-          await _context.SaveChangesAsync();
-          var app = insert.Entity;
-
-          res = new IApiResponse<bool>
-          {
-            Status = 201,
-            Message = null,
-            Value = true
-          };
-        }
-        return res;
       }
       catch (Exception ex)
       {
@@ -85,30 +61,42 @@ namespace TrApi.Queries.Services
       }
     }
 
-    public async Task<IApiResponse<bool>> Delete(int id)
+    public async Task<IApiResponse<int>> UpdateAsync(int id, ApplicationEntity entity)
     {
-      var entity = _context.Applications.Where(app => app.Id == id).FirstOrDefault();
-      _context.Applications.Remove(entity);
-      await _context.SaveChangesAsync();
-      return new IApiResponse<bool>
+      try
       {
-        Status = 201,
-        Message = null,
-        Value = true
-      };
+        var items = await _context.Applications.Where(item => item.UserId == 3 && item.Id != id).ToListAsync();
+        var resp = IsValidModel(items, entity, Actions.UPDATE);
+        if (resp.Status == resp.StatusOk)
+        {
+          var existintItem = await _context.Applications.FirstAsync(x => x.Id == id);
+          if (existintItem != null)
+          {
+            existintItem.Url = entity.Url;
+            existintItem.Name = entity.Name;
+            await _context.SaveChangesAsync();
+          }
+          else
+            resp.SetNotFound();
+        }
+        return resp;
+      }
+      catch (Exception ex)
+      {
+        string text = ex.Message;
+        throw ex;
+      }
     }
 
-
-    private IApiResponse<int> isValidModel(Application model)
+    private static IApiResponse<int> IsValidModel(List<ApplicationEntity> items, ApplicationEntity model, Actions action)
     {
-      var items = _context.Applications.ToList();
-      var res = IApiResponse<int>.GetDefault();
-      var isInvalidModel = items.Where(app => app.Name == model.Name).Count() > 0;
+      var res = IApiResponse<int>.GetDefault(action);
+      var isInvalidModel = items.Where(app => app.Name == model.Name).Any();
       if (isInvalidModel)
       {
         res = new IApiResponse<int>
         {
-          Status = 422,
+          Status = (int)ResponseStatus.ERROR_ENTITY_VALIDATION,
           Message = new FieldMessage("name", "There is already an application with the same name"),
           Value = 0
         };
@@ -119,15 +107,13 @@ namespace TrApi.Queries.Services
         {
           res = new IApiResponse<int>
           {
-            Status = 422,
+            Status = (int)ResponseStatus.ERROR_ENTITY_VALIDATION,
             Message = new FieldMessage("url", "There is already an application with the same url"),
             Value = 0
           };
         }
       }
-
       return res;
     }
-
   }
 }

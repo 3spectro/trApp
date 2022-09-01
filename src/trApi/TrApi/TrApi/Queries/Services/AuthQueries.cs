@@ -8,28 +8,35 @@ namespace TrApi.Queries.Services
   {
 
     private const string symmetricKey = "625A5CB11391BD1ED231179C7D3476EB959B5293AD017832D236D307AD9085F6";
+    private readonly DataContext _context;
+    private readonly IEncrypt _encrypt;
 
-    public Task<IApiResponse<LoginResponse>> Login(LoquinRequest request)
+    public AuthQueries(DataContext context, IEncrypt encrypt)
     {
-      // TODO: Replace for the right logic
-      var isValid = request.Username == "ereynoso" && request.Password == "123";
+      _context = context;
+      _encrypt = encrypt;
+    }
+
+    public async Task<IApiResponse<LoginResponse>> Login(LoginRequest request)
+    {
+      var user = await _context.Users.Where(user => user.Username == request.Username && user.Password == _encrypt.GetEncryptedWord(request.Password)).FirstOrDefaultAsync();
       var resp = new LoginResponse();
-      if (isValid)
+      if (user != null)
       {
         var token = this.Generate(request.Username);
         resp = new LoginResponse
         {
-          FirstName = "Esteban",
-          LastName = "Reynoso",
+          FirstName = user.FirstName,
+          LastName = user.LastName,
           Token =  token
         };
       }
-      return Task.FromResult(new IApiResponse<LoginResponse>
+      return new IApiResponse<LoginResponse>
       {
         Status = 200,
         Message = null, //isValid ? string.Empty : "User or password incorrect",
-        Value = isValid ? resp : null,
-      });
+        Value = user != null ? resp : null,
+      };
     }
 
     public bool ValidateToken(string tokenString)
@@ -104,6 +111,5 @@ namespace TrApi.Queries.Services
       return claim;
     }
 
-    
   }
 }

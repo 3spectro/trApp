@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+using System.Security.Claims;
 using TrApi.Models;
 using TrApi.Queries.Interfaces;
 
@@ -10,7 +11,7 @@ namespace TrApi.Controllers
 {
   [Route("api/[controller]")]
   [ApiController]
-  [Authorize]
+  // [Authorize]
   public class ApplicationsController : ControllerBase
   {
 
@@ -22,28 +23,27 @@ namespace TrApi.Controllers
     }
 
     [HttpGet]
-    public Task<IApiResponse<IEnumerable<Application>>> Get()
+    public Task<IApiResponse<IEnumerable<ApplicationModel>>> Get()
     {
       return _applicationQueries.GetAllAsync();
     }
 
     [HttpPost]
-    public Task<IApiResponse<int>> Post([FromBody] Application value)
+    public Task<IApiResponse<int>> Post([FromBody] ApplicationModel value)
     {
-      return _applicationQueries.Insert(value);
+      return _applicationQueries.InsertAsync((ApplicationEntity)value);
     }
 
     [HttpPut]
-    public Task<IApiResponse<bool>> Put([FromBody] Application value)
+    public Task<IApiResponse<int>> Put([FromBody] IUpddateRequest<ApplicationModel> request)
     {
-      return _applicationQueries.Update(value);
+      return _applicationQueries.UpdateAsync(request.Id, (ApplicationEntity)request.value);
     }
 
-    // DELETE api/<ApplicationsController>/5
-    [HttpDelete("{id}")]
-    public Task<IApiResponse<bool>> Delete(int id)
+    [HttpPost("delete")]
+    public Task<IApiResponse<bool>> Delete([FromBody] int id)
     {
-      return _applicationQueries.Delete(id);
+      return _applicationQueries.DeleteAsync(id);
     }
   }
 }

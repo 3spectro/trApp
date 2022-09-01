@@ -18,29 +18,58 @@ export class ApplicationsService {
     private readonly http: HttpClient
   ) { }
 
-  get$ = (): Observable<IApiResponse<IApplication[]>> => {
-    return this.http.get<IApiResponse<IApplication[]>>(URL);
+  get$ = (): Observable<IGenericResponse<IApplication[]>> => {
+    return this.http.get<IGenericResponse<IApplication[]>>(URL);
   }
 
-  delete$ = (id: number): Observable<IApiResponse<boolean>> => {
-    return this.http.delete<IApiResponse<boolean>>(URL, { body: { id: id}});
+  delete$ = (id: number): Observable<IGenericResponse<boolean>> => {
+    return this.http.post<IApiResponse<boolean>>(URL + '/delete', id).pipe(
+      map(resp => {
+        return this.getGenericResponse(200, resp);
+      })
+    );
   }
 
-  update$ = (item: IApplication): Observable<IApiResponse<boolean>> => {
-    return this.http.put<IApiResponse<boolean>>(URL, item);
+  update$ = (item: IApplication): Observable<IGenericResponse<number>> => {
+    return this.http.put<IApiResponse<number>>(URL, item).pipe(
+      map(resp => {
+        return this.getGenericResponse(201, resp);
+        /*return {
+          status: resp.status === 201,
+          message: resp.status === 201 ? undefined : resp.message,
+          value: resp.value
+        };*/
+      })
+    );
   }
 
   save$ = (item: IApplication): Observable<IGenericResponse<number>> => {
     return this.http.post<IApiResponse<number>>(URL, item).pipe(
       map(resp => {
-        debugger;
-        return {
+        return this.getGenericResponse(201, resp);
+        /*return {
           status: resp.status === 201,
           message: resp.status === 201 ? undefined : resp.message,
           value: resp.value
-        };
+        };*/
       })
     );
+  }
+
+  getEmptyApplication(): IApplication {
+    return {
+      id: -1,
+      name: '',
+      url: ''
+    };
+  }
+
+  private getGenericResponse(okStatus: number, resp: IApiResponse<any>): IGenericResponse<any>{
+    return {
+      status: resp.status === 201,
+      message: resp.status === 201 ? undefined : resp.message,
+      value: resp.value
+    };
   }
 }
 

@@ -2,7 +2,7 @@ import { ToastrService } from 'ngx-toastr';
 import { LoadingBarService } from './../services/loading-bar.service';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { map, catchError,  } from 'rxjs/operators';
 
 @Injectable({
@@ -21,6 +21,14 @@ export class ResponseInterceptorService implements HttpInterceptor {
       map(res => {
         if (res instanceof HttpResponse) {
           this.loadingBarService.hidde();
+          const value = res.url?.indexOf('Auth');
+          if (value && value === -1) {
+            let newRes = res.clone();
+            newRes.body.status = res.body.status === 201
+            newRes.body.message = res.body.status === 201 ? undefined : res.body.message
+            newRes.body.value = res.body.value
+            return newRes;
+          }
         }
         return res;
       }),

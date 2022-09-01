@@ -7,6 +7,9 @@ namespace TrApi.Data
   {
     public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
-    public DbSet<Application> Applications { get; set; }
+    public DbSet<UserEntity> Users { get; set; }
+    public DbSet<ApplicationEntity> Applications { get; set; }
+    public DbSet<GuestEntity> Guests { get; set; }
+
   }
 }

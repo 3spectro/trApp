@@ -38,7 +38,7 @@ export class GuestSideBarComponent implements OnInit {
     this.form = this.fb.group({
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
-      passport: ['', []],
+      passport: ['', [Validators.required, Validators.min(9), Validators.max(9)]],
       email: ['', [Validators.pattern(RegEx.EMAIL)]],
       celPhone: ['', []],
     });

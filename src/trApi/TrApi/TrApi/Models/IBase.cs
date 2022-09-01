@@ -1,8 +1,19 @@
 ﻿namespace TrApi.Models
 {
-  public abstract class IBaseModel
+  public abstract class IModel
   {
   }
+
+  public abstract class IEntity
+  {
+  }
+
+  public abstract class IUpddateRequest<T> where T : IModel 
+  {
+    public int Id { get; set; }
+    public T value { get; set; }
+  }
+
 
   public class FieldMessage
   {

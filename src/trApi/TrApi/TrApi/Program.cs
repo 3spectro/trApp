@@ -22,14 +22,19 @@ builder.Services.AddAuthentication("BasicAuthentication")
   .AddScheme<AuthenticationSchemeOptions, AuthHandler>("BasicAuthentication", null);
 
 // Add services
+builder.Services.AddScoped<IEncrypt, Encrypt>();
 builder.Services.AddScoped<IApplicationQueries, ApplicationQueries>();
 builder.Services.AddScoped<IAuthQueries, AuthQueries>();
+builder.Services.AddScoped<IGuestQueries, GuestQueries>();
+builder.Services.AddScoped<IUserQueries, UserQueries>();
 
 builder.Services.AddCors(actions => actions.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// builder.Services.AddSingleton();
 
 var app = builder.Build();
 
