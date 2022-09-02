@@ -1,6 +1,8 @@
 global using Microsoft.EntityFrameworkCore;
 global using TrApi.Data;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
+using TrApi.IoC;
 using TrApi.Queries.Interfaces;
 using TrApi.Queries.Services;
 using TrApi.Security;
@@ -34,7 +36,12 @@ builder.Services.AddCors(actions => actions.AddDefaultPolicy(policy => policy.Al
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// builder.Services.AddSingleton();
+var config = new MapperConfiguration(cfg =>
+{
+  cfg.AddProfile(new AutoMapperProfile());
+});
+var mapper = config.CreateMapper();
+builder.Services.AddSingleton(mapper);
 
 var app = builder.Build();
 

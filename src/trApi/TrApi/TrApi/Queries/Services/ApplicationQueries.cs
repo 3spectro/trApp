@@ -1,4 +1,4 @@
-﻿using System;
+﻿using AutoMapper;
 using TrApi.Enums;
 using TrApi.Models;
 using TrApi.Queries.Interfaces;
@@ -9,10 +9,12 @@ namespace TrApi.Queries.Services
   {
 
     private readonly DataContext _context;
+    private readonly IMapper _mapper;
 
-    public ApplicationQueries(DataContext context)
+    public ApplicationQueries(DataContext context, IMapper mapper)
     {
       this._context = context;
+      this._mapper = mapper;
     }
 
     public async Task<IApiResponse<bool>> DeleteAsync(int id)
@@ -33,7 +35,7 @@ namespace TrApi.Queries.Services
     {
       var res = IApiResponse<IEnumerable<ApplicationModel>>.GetDefault(Actions.GET);
       var list = await _context.Applications.Where(x => x.UserId == 3).ToListAsync();
-      res.Value = (IEnumerable<ApplicationModel>)list;
+      res.Value = _mapper.Map<IEnumerable<ApplicationModel>>(list);
       return res;
     }
 
