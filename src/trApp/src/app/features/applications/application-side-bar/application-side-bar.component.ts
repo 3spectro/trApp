@@ -15,12 +15,12 @@ const NAME = 'Application';
   styleUrls: ['./application-side-bar.component.css']
 })
 export class ApplicationSideBarComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
-  @Input() app!: IApplication;
+  @Input() item!: IApplication;
   @Output() save: EventEmitter<IApplication> = new EventEmitter<IApplication>();
 
   @ViewChild('close') closeButton!: ElementRef;
 
-  applicationForm!: FormGroup;
+  form!: FormGroup;
 
   afterViewInit$ = new Subject<void>();
   onChanges$ = new Subject<void>();
@@ -52,13 +52,13 @@ export class ApplicationSideBarComponent implements OnInit, AfterViewInit, OnCha
   ngOnInit(): void {
     this.initForm();
     combineLatest([this.afterViewInit$, this.onChanges$]).pipe(takeUntil(this.onDestroy$)).subscribe(() => {
-      this.applicationForm.patchValue(this.app);
-      this.isUpdate = this.app.id > 0;
+      this.form.patchValue(this.item);
+      this.isUpdate = this.item.id > 0;
     });
   }
 
   private initForm(): void {
-    this.applicationForm = this.fb.group({
+    this.form = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       url: ['', [Validators.required, Validators.pattern(RegEx.URL)]],
     });
@@ -78,9 +78,9 @@ export class ApplicationSideBarComponent implements OnInit, AfterViewInit, OnCha
 
   private getApplication(): IApplication {
     return {
-      id: this.app.id,
-      name: this.applicationForm.value['name'].toString(),
-      url: this.applicationForm.value['url'].toString()
+      id: this.item.id,
+      name: this.form.value['name'].toString(),
+      url: this.form.value['url'].toString()
     }
   }
 
@@ -92,7 +92,7 @@ export class ApplicationSideBarComponent implements OnInit, AfterViewInit, OnCha
     if (res.status) {
       this.processOkResult(app, res.value);
     } else {
-      this.applicationForm.controls[res.message?.field as string].setErrors({ incorrect: true, message: res.message?.message});
+      this.form.controls[res.message?.field as string].setErrors({ incorrect: true, message: res.message?.message});
       this.toastr.warning(res.message?.message);
     }
   }
@@ -105,6 +105,11 @@ export class ApplicationSideBarComponent implements OnInit, AfterViewInit, OnCha
       this.toastr.success(this.messagesService.getCreateMessage(NAME));
     }
     this.save.emit(app);
+    this.closeSlider();
+  }
+
+  closeSlider() {
+    this.form.reset();
     this.renderer.selectRootElement(this.closeButton.nativeElement).click();
   }
 }

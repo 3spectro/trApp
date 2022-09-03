@@ -27,7 +27,7 @@ export class IndexComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    forkJoin({
+    /*forkJoin({
       travels: this.journeysService.get$(),
       guests: this.guestsService.get$()
     }).subscribe(res => {
@@ -37,7 +37,7 @@ export class IndexComponent implements OnInit {
       if (res.guests.status === 200) {
         this.guests = res.guests.value;
       }
-    });
+    });*/
   }
 
   selectItem(id: number): void {

@@ -10,7 +10,7 @@ namespace TrApi.Controllers
 {
   [Route("api/[controller]")]
   [ApiController]
-  // [Authorize]
+  [Authorize]
   public class GuestsController : ControllerBase
   {
 
@@ -34,9 +34,9 @@ namespace TrApi.Controllers
     }
 
     [HttpPut]
-    public Task<IApiResponse<int>> Put([FromBody] IUpddateRequest<GuestModel> request)
+    public Task<IApiResponse<int>> Put([FromBody] GuestModel value)
     {
-      return _queries.UpdateAsync(request.Id, (GuestEntity)request.value);
+      return _queries.UpdateAsync(value.Id.Value, (GuestEntity)value);
     }
 
     [HttpPost("delete")]

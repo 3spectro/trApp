@@ -1,43 +1,44 @@
 <div class="offcanvas offcanvas-end" tabindex="-1" id="appSideBar" aria-labelledby="appSideBarLabel">
   <div class="offcanvas-header border-bottom border-secondary">
     <h4 class="offcanvas-title" id="appSideBarLabel">Application</h4>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" #close></button>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" #close hidden></button>
+    <button type="button" class="btn-close" aria-label="Close" (click)="closeSlider()"></button>
   </div>
   <div class="offcanvas-body">
     <div>
-      <form [formGroup]="applicationForm" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
         <div class="mb-3">
           <label for="appName" class="form-label">Application Name</label>
-          <input type="text" class="form-control" id="appName" required formControlName="name" name="name" [ngClass]="getValidationClass(applicationForm.get('name'))">
-          <div class="valid-feedback" style="display: block;" *ngIf="applicationForm.get('name')?.touched && applicationForm.get('name')?.valid">
+          <input type="text" class="form-control" id="appName" required formControlName="name" name="name" [ngClass]="getValidationClass(form.get('name'))">
+          <div class="valid-feedback" style="display: block;" *ngIf="form.get('name')?.touched && form.get('name')?.valid">
             Looks good!
           </div>
-          <div class="invalid-feedback" style="display: block;" *ngIf="applicationForm.get('name')?.touched && applicationForm.get('name')?.errors?.['required']">
+          <div class="invalid-feedback" style="display: block;" *ngIf="form.get('name')?.touched && form.get('name')?.errors?.['required']">
             This field is required
           </div>
-          <div class="invalid-feedback" style="display: block;" *ngIf="applicationForm.get('name')?.touched && applicationForm.get('name')?.errors?.['incorrect']">
-            {{applicationForm.get('name')?.errors?.['message']}}
+          <div class="invalid-feedback" style="display: block;" *ngIf="form.get('name')?.touched && form.get('name')?.errors?.['incorrect']">
+            {{form.get('name')?.errors?.['message']}}
           </div>
         </div>
         <div class="mb-3">
           <label for="url" class="form-label">Url</label>
-          <input type="url" class="form-control" id="url" required formControlName="url" name="url" [ngClass]="getValidationClass(applicationForm.get('url'))">
-          <div class="valid-feedback" style="display: block;" *ngIf="applicationForm.get('url')?.touched && applicationForm.get('url')?.valid">
+          <input type="url" class="form-control" id="url" required formControlName="url" name="url" [ngClass]="getValidationClass(form.get('url'))">
+          <div class="valid-feedback" style="display: block;" *ngIf="form.get('url')?.touched && form.get('url')?.valid">
             Looks good!
           </div>
-          <div class="invalid-feedback" style="display: block;" *ngIf="applicationForm.get('url')?.touched && applicationForm.get('url')?.errors?.['required']">
+          <div class="invalid-feedback" style="display: block;" *ngIf="form.get('url')?.touched && form.get('url')?.errors?.['required']">
             This field is required
-          </div>
-          <div class="invalid-feedback" style="display: block;" *ngIf="applicationForm.get('url')?.touched && applicationForm.get('url')?.errors?.['pattern']">
+          </div>form
+          <div class="invalid-feedback" style="display: block;" *ngIf="form.get('url')?.touched && form.get('url')?.errors?.['pattern']">
             This field is an url. ex. https://www.google.com
           </div>
-          <div class="invalid-feedback" style="display: block;" *ngIf="applicationForm.get('url')?.touched && applicationForm.get('url')?.errors?.['incorrect']">
-            {{applicationForm.get('url')?.errors?.['message']}}
+          <div class="invalid-feedback" style="display: block;" *ngIf="form.get('url')?.touched && form.get('url')?.errors?.['incorrect']">
+            {{form.get('url')?.errors?.['message']}}
           </div>
         </div>
         <div class="text-end">
-          <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="offcanvas" aria-label="Close">Close</button>
-          <button type="submit" class="btn btn-primary" [disabled]="applicationForm.invalid">Save</button>
+          <button type="button" class="btn btn-secondary me-2" (click)="closeSlider()">Close</button>
+          <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Save</button>
         </div>
       </form>
     </div>

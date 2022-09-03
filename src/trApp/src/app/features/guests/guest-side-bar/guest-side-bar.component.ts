@@ -1,8 +1,13 @@
-import { Subject, AsyncSubject, combineLatest, takeUntil } from 'rxjs';
+import { MessagesService } from './../../../shared/services/messages.service';
+import { ToastrService } from 'ngx-toastr';
+import { IGenericResponse } from './../../../shared/domain/core.entity';
+import { Subject, AsyncSubject, combineLatest, takeUntil, Observable } from 'rxjs';
 import { IGuest, GuestsService } from '../../../shared/services/guests.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnInit, Output, EventEmitter, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { RegEx } from 'src/app/shared/domain/enums/regex.enum'
+
+const NAME = 'Guest';
 
 @Component({
   selector: 'app-guest-side-bar',
@@ -10,10 +15,10 @@ import { RegEx } from 'src/app/shared/domain/enums/regex.enum'
   styleUrls: ['./guest-side-bar.component.css']
 })
 export class GuestSideBarComponent implements OnInit {
-  @ViewChild('close') close!: ElementRef;
-
   @Input() item!: IGuest;
   @Output() save: EventEmitter<IGuest> = new EventEmitter<IGuest>();
+
+  @ViewChild('close') closeButton!: ElementRef;
 
   form!: FormGroup;
 
@@ -21,16 +26,21 @@ export class GuestSideBarComponent implements OnInit {
   onChanges$ = new Subject<void>();
   onDestroy$ = new AsyncSubject<void>();
 
+  isUpdate = false;
+
   constructor(
     private fb: FormBuilder,
-    private service: GuestsService,
-    private readonly render: Renderer2
+    private readonly renderer: Renderer2,
+    private readonly toastr: ToastrService,
+    private readonly service: GuestsService,
+    private readonly messagesService: MessagesService
   ) { }
 
   ngOnInit(): void {
     this.initForm();
     combineLatest([this.afterViewInit$, this.onChanges$]).pipe(takeUntil(this.onDestroy$)).subscribe(() => {
-      this.setForm();
+      this.form.patchValue(this.item);
+      this.isUpdate = this.item.id > 0;
     });
   }
 
@@ -42,17 +52,6 @@ export class GuestSideBarComponent implements OnInit {
       email: ['', [Validators.pattern(RegEx.EMAIL)]],
       celPhone: ['', []],
     });
-  }
-
-  private setForm(): void {
-    this.form.setValue(
-      {
-        firstName: this.item.firstName ?? '',
-        lastNamel: this.item.lastName ?? '',
-        passport: this.item.passport ?? '',
-        email: this.item.email ?? '',
-        celPhone: this.item.celPhone ?? '',
-      });
   }
 
   ngAfterViewInit(): void {
@@ -68,13 +67,15 @@ export class GuestSideBarComponent implements OnInit {
     this.onDestroy$.complete();
   }
 
+  getValidationClass(input: any): string {
+    if (!input.touched || !input.value) return '';
+    return input.invalid ? 'invalid-input' : 'valid-input';
+  }
+
   onSubmit() {
-    const app: IGuest = this.getGuest();
-    this.service.save$(app).subscribe(response => {
-      if (response.status === 201) {
-        this.save.emit(response.value);
-        this.render.selectRootElement(this.close.nativeElement).click();
-      }
+    let item = this.getGuest();
+    this.getAction(item).subscribe(res => {
+      this.processResult(item, res);
     });
   }
 
@@ -89,8 +90,27 @@ export class GuestSideBarComponent implements OnInit {
     }
   }
 
-  getValidationClass(input: any): string {
-    if (!input.touched || !input.value) return '';
-    return input.invalid ? 'invalid-input' : 'valid-input';
+  private getAction(item: IGuest): Observable<IGenericResponse<number>> {
+    return !this.isUpdate ? this.service.save$(item) : this.service.update$(item)
+  }
+
+  private processResult(item: IGuest, res: IGenericResponse<number>) {
+    if (res.status) {
+      this.processOkResult(item, res.value);
+    } else {
+      this.form.controls[res.message?.field as string].setErrors({ incorrect: true, message: res.message?.message});
+      this.toastr.warning(res.message?.message);
+    }
+  }
+
+  private processOkResult(item: IGuest, id:number): void {
+    item.id = id;
+    if (this.isUpdate) {
+      this.toastr.success(this.messagesService.getUpdateMessage(NAME));
+    } else {
+      this.toastr.success(this.messagesService.getCreateMessage(NAME));
+    }
+    this.save.emit(item);
+    this.renderer.selectRootElement(this.closeButton.nativeElement).click();
   }
 }

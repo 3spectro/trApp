@@ -5,17 +5,12 @@ using TrApi.Queries.Interfaces;
 
 namespace TrApi.Queries.Services
 {
-  public class ApplicationQueries : IApplicationQueries
+  public class ApplicationQueries : BaseQuery, IApplicationQueries
   {
 
-    private readonly DataContext _context;
-    private readonly IMapper _mapper;
-
     public ApplicationQueries(DataContext context, IMapper mapper)
-    {
-      this._context = context;
-      this._mapper = mapper;
-    }
+      :base(context, mapper)
+    { }
 
     public async Task<IApiResponse<bool>> DeleteAsync(int id)
     {

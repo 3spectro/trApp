@@ -21,11 +21,10 @@ export class ResponseInterceptorService implements HttpInterceptor {
       map(res => {
         if (res instanceof HttpResponse) {
           this.loadingBarService.hidde();
-          const value = res.url?.indexOf('Auth');
-          if (value && value === -1) {
+          if (res.body?.statusOk) {
             let newRes = res.clone();
-            newRes.body.status = res.body.status === 201
-            newRes.body.message = res.body.status === 201 ? undefined : res.body.message
+            newRes.body.status = res.body.status === res.body.statusOk
+            newRes.body.message = res.body.status === res.body.statusOk ? undefined : res.body.message
             newRes.body.value = res.body.value
             return newRes;
           }

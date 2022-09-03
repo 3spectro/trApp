@@ -1,3 +1,4 @@
+import { IndexBaseComponent } from './../classes/index-base.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ConfirmationComponent } from '../components/modals/confirmation/confirmation.component';
@@ -6,11 +7,13 @@ import { PaginationComponent } from '../components/pagination/pagination.compone
 @NgModule({
   declarations: [
     ConfirmationComponent,
-    PaginationComponent
+    PaginationComponent,
+    IndexBaseComponent
   ],
   exports: [
     ConfirmationComponent,
-    PaginationComponent
+    PaginationComponent,
+    IndexBaseComponent
   ],
   imports: [
     CommonModule

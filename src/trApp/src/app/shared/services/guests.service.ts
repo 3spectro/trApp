@@ -1,93 +1,48 @@
-import { LoadingBarService } from './loading-bar.service';
+import { IGenericResponse } from './../domain/core.entity';
+import { HttpClient } from '@angular/common/http';
+import { environment } from './../../../environments/environment';
 import { Injectable } from '@angular/core';
-import { of, Observable, timer, map } from 'rxjs';
-import { IApiResponse } from '../domain/core.entity';
+import { Observable, map } from 'rxjs';
+
+const URL = `${environment.apiBaseUrl}Guests`;
 
 @Injectable({
   providedIn: 'root'
 })
 export class GuestsService {
 
-  items: IGuest[] = [
-    {
-      id: 1,
-      firstName: 'Esteban',
-      lastName: 'Reynoso',
-      passport: 'AAE988238',
-      email: 'ereynoso.931@gmail.com',
-      celPhone: '+5493513996282'
-    },
-    {
-      id: 2,
-      firstName: 'Marcos',
-      lastName: 'Savy',
-      passport: 'AAF365149',
-      email: 'ereynoso.931@gmail.com',
-      celPhone: '+5493513678532'
-    },
-    {
-      id: 3,
-      firstName: 'Leonardo',
-      lastName: 'Frias',
-      passport: 'ABC423182',
-      email: 'leofrias@gmail.com',
-      celPhone: '+5493513325419'
-    },
-  ];
-
   constructor(
-    private readonly loadingBarService: LoadingBarService
+    private readonly http: HttpClient
   ) { }
 
-  get$ = (): Observable<IApiResponse<IGuest[]>> => {
-    this.loadingBarService.show();
-    timer(1000).subscribe(() => this.loadingBarService.hidde());
-    return of({
-      status: 200,
-      message: undefined,
-      value: this.items,
-    });
+  get$ = (): Observable<IGenericResponse<IGuest[]>> => {
+    return this.http.get<IGenericResponse<IGuest[]>>(URL);
   }
 
-  delete$ = (id: number): Observable<IApiResponse<null>> => {
-    this.loadingBarService.show();
-    timer(1000).subscribe(() => this.loadingBarService.hidde());
-    this.items = this.items.filter(x => x.id !== id);
-    return of({
-      status: 200,
-      message: undefined,
-      value: null
-    });
+  delete$ = (id: number): Observable<IGenericResponse<boolean>> => {
+    return this.http.post<IGenericResponse<boolean>>(URL + '/delete', id);
   }
 
-  update$ = (item: IGuest): Observable<IApiResponse<IGuest>> => {
-    this.loadingBarService.show();
-    timer(1000).subscribe(() => this.loadingBarService.hidde());
-    const index = this.items.findIndex(x => x.id === item.id);
-    this.items[index] = item;
-    return of({
-      status: 200,
-      message: undefined,
-      value: item,
-    });
+  update$ = (item: IGuest): Observable<IGenericResponse<number>> => {
+    return this.http.put<IGenericResponse<number>>(URL, item);
   }
 
-  save$ = (item: IGuest): Observable<IApiResponse<IGuest>> => {
-    this.loadingBarService.show();
-    timer(1000).subscribe(() => this.loadingBarService.hidde());
-    const response: IApiResponse<IGuest> = {
-      status: 201,
-      message: undefined,
-      value: {} as IGuest,
-    }
-    if (this.items.filter(x => x.passport === item.passport).length > 0) {
-      response.status = 422;
-      // response.message = `There are another application with this passport: ${item.passport}`;
-    } else {
-      item.id = this.items.length;
-      response.value = item;
-    }
-    return of(response);
+  save$ = (item: IGuest): Observable<IGenericResponse<number>> => {
+    return this.http.post<IGenericResponse<number>>(URL, item);
+  }
+
+  getEmpty(): Observable<IGuest> {
+    return new Observable(observer => {
+      observer.next({
+        id: -1,
+        firstName: '',
+        lastName: '',
+        passport: '',
+        email: '',
+        celPhone: '',
+      });
+      observer.complete();
+    });
   }
 }
 

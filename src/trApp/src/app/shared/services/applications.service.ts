@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from './../../../environments/environment';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { IApiResponse } from '../domain/core.entity';
 
 const URL = `${environment.apiBaseUrl}Applications`;
 
@@ -23,53 +22,34 @@ export class ApplicationsService {
   }
 
   delete$ = (id: number): Observable<IGenericResponse<boolean>> => {
-    return this.http.post<IApiResponse<boolean>>(URL + '/delete', id).pipe(
-      map(resp => {
-        return this.getGenericResponse(200, resp);
-      })
-    );
+    return this.http.post<IGenericResponse<boolean>>(URL + '/delete', id);
   }
 
   update$ = (item: IApplication): Observable<IGenericResponse<number>> => {
-    return this.http.put<IApiResponse<number>>(URL, item).pipe(
-      map(resp => {
-        return this.getGenericResponse(201, resp);
-        /*return {
-          status: resp.status === 201,
-          message: resp.status === 201 ? undefined : resp.message,
-          value: resp.value
-        };*/
-      })
-    );
+    return this.http.put<IGenericResponse<number>>(URL, item);
   }
 
   save$ = (item: IApplication): Observable<IGenericResponse<number>> => {
-    return this.http.post<IApiResponse<number>>(URL, item).pipe(
-      map(resp => {
-        return this.getGenericResponse(201, resp);
-        /*return {
-          status: resp.status === 201,
-          message: resp.status === 201 ? undefined : resp.message,
-          value: resp.value
-        };*/
-      })
-    );
+    return this.http.post<IGenericResponse<number>>(URL, item);
   }
 
-  getEmptyApplication(): IApplication {
+  /*getEmpty(): IApplication {
     return {
       id: -1,
       name: '',
       url: ''
     };
-  }
+  }*/
 
-  private getGenericResponse(okStatus: number, resp: IApiResponse<any>): IGenericResponse<any>{
-    return {
-      status: resp.status === 201,
-      message: resp.status === 201 ? undefined : resp.message,
-      value: resp.value
-    };
+  getEmpty(): Observable<IApplication> {
+    return new Observable(observer => {
+      observer.next({
+        id: -1,
+        name: '',
+        url: ''
+      });
+      observer.complete();
+    });
   }
 }
 

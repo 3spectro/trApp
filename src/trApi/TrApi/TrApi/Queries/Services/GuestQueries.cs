@@ -1,18 +1,16 @@
-﻿using TrApi.Enums;
+﻿using AutoMapper;
+using TrApi.Enums;
 using TrApi.Models;
 using TrApi.Queries.Interfaces;
 
 namespace TrApi.Queries.Services
 {
-  public class GuestQueries : IGuestQueries
+  public class GuestQueries : BaseQuery, IGuestQueries
   {
 
-    private readonly DataContext _context;
-
-    public GuestQueries(DataContext context)
-    {
-      _context = context;
-    }
+    public GuestQueries(DataContext context, IMapper mapper)
+      : base (context, mapper)
+    { }
 
     public async Task<IApiResponse<bool>> DeleteAsync(int id)
     {
@@ -31,7 +29,8 @@ namespace TrApi.Queries.Services
     public async Task<IApiResponse<IEnumerable<GuestModel>>> GetAllAsync()
     {
       var res = IApiResponse<IEnumerable<GuestModel>>.GetDefault(Actions.GET);
-      res.Value = (IEnumerable<GuestModel>)await _context.Guests.Where(x => x.UserId == 3).ToListAsync();
+      var list = await _context.Guests.Where(x => x.UserId == 3).ToListAsync();
+      res.Value = _mapper.Map<IEnumerable<GuestModel>>(list);
       return res;
     }
 

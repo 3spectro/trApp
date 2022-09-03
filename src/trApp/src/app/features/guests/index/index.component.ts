@@ -1,3 +1,6 @@
+import { IGenericResponse } from './../../../shared/domain/core.entity';
+import { Observable } from 'rxjs';
+import { IndexBaseComponent } from './../../../shared/classes/index-base.component';
 import { MessagesService } from './../../../shared/services/messages.service';
 import { GuestsService, IGuest } from './../../../shared/services/guests.service';
 import { Component, OnInit } from '@angular/core';
@@ -10,39 +13,33 @@ const NAME = 'Guest';
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.css']
 })
-export class IndexComponent implements OnInit {
-  items?: IGuest[] = [];
-  selectedId!: number;
-
+export class IndexComponent  extends IndexBaseComponent<IGuest> implements OnInit {
   constructor(
-    private readonly toastr: ToastrService,
-    private readonly guestsService: GuestsService,
-    private readonly messagesService: MessagesService
-  ) { }
-
-  ngOnInit(): void {
-    this.guestsService.get$().subscribe(x => {
-      if (x.status === 200) {
-        this.items = x.value;
-      }
+    toastr: ToastrService,
+    private readonly service: GuestsService,
+    messagesService: MessagesService
+  ) {
+    super(toastr, messagesService);
+    this.name = NAME;
+    this.getAll$ = this.service.get$();
+    this.getIndexFromId$ = new Observable<number>(observer => {
+      observer.next(this.items?.findIndex(x => x.id == this.selectedItem?.id));
+      observer.complete();
+    });
+    this.getEmpty$ = this.service.getEmpty();
+    this.delete$ = new Observable<IGenericResponse<boolean>>(observer => {
+      this.service.delete$(this.selectedItem?.id).subscribe(x => {
+        observer.next(x);
+        observer.complete();
+      });
+    });
+    this.removeFromArray$ = new Observable<IGuest[]>(observer => {
+      observer.next(this.items?.filter(x => x.id !== this.selectedItem?.id));
+      observer.complete();
     });
   }
 
-  selectItem(id: number): void {
-    this.selectedId = id;
-  }
-
-  save(item: IGuest): void {
-    this.toastr.success(this.messagesService.getCreateMessage(NAME));
-    this.items?.push(item);
-  }
-
-  delete(): void {
-    this.guestsService.delete$(this.selectedId).subscribe(res => {
-      if (res.status === 200) {
-        this.items = this.items?.filter(x => x.id !== this.selectedId);
-        this.toastr.success(this.messagesService.getDeleteMessage(NAME));
-      }
-    })
+  ngOnInit(): void {
+    this.init();
   }
 }

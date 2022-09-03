@@ -8,7 +8,9 @@ namespace TrApi.IoC
 
     public AutoMapperProfile()
     {
-      CreateMap<ApplicationEntity, ApplicationModel>().ReverseMap(); //reverse so the both direction
+      CreateMap<ApplicationEntity, ApplicationModel>();
+      CreateMap<GuestEntity, GuestModel>();
+      CreateMap<UserEntity, UserModel>();
     }
   }
 }
