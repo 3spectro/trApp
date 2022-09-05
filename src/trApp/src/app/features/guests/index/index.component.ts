@@ -1,9 +1,10 @@
+import { I201ItemResponse } from './../../../shared/components/side-bar-base/side-bar-base.component';
 import { IGenericResponse } from './../../../shared/domain/core.entity';
 import { Observable } from 'rxjs';
-import { IndexBaseComponent } from './../../../shared/classes/index-base.component';
+import { IndexBaseComponent } from '../../../shared/components/index-base/index-base.component';
 import { MessagesService } from './../../../shared/services/messages.service';
 import { GuestsService, IGuest } from './../../../shared/services/guests.service';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 
 const NAME = 'Guest';
@@ -13,7 +14,7 @@ const NAME = 'Guest';
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.css']
 })
-export class IndexComponent  extends IndexBaseComponent<IGuest> implements OnInit {
+export class IndexComponent  extends IndexBaseComponent<IGuest> {
   constructor(
     toastr: ToastrService,
     private readonly service: GuestsService,
@@ -39,7 +40,8 @@ export class IndexComponent  extends IndexBaseComponent<IGuest> implements OnIni
     });
   }
 
-  ngOnInit(): void {
-    this.init();
+  save(res: I201ItemResponse<IGuest>) {
+    res.value.id = res.id;
+    this.saveItem(res.value);
   }
 }

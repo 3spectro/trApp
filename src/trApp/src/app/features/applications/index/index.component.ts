@@ -1,17 +1,18 @@
+import { I201ItemResponse } from './../../../shared/components/side-bar-base/side-bar-base.component';
 import { IGenericResponse } from './../../../shared/domain/core.entity';
 import { Observable } from 'rxjs';
-import { IndexBaseComponent } from './../../../shared/classes/index-base.component';
+import { IndexBaseComponent } from '../../../shared/components/index-base/index-base.component';
 import { MessagesService } from 'src/app/shared/services/messages.service';
 import { ToastrService } from 'ngx-toastr';
 import { IApplication, ApplicationsService } from 'src/app/shared/services/applications.service';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.css']
 })
-export class IndexComponent extends IndexBaseComponent<IApplication> implements OnInit {
+export class IndexComponent extends IndexBaseComponent<IApplication> {
 
   constructor(
     toastr: ToastrService,
@@ -38,7 +39,8 @@ export class IndexComponent extends IndexBaseComponent<IApplication> implements 
     });
   }
 
-  ngOnInit(): void {
-    this.init();
+  save(res: I201ItemResponse<IApplication>) {
+    res.value.id = res.id;
+    this.saveItem(res.value);
   }
 }

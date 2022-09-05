@@ -1,15 +1,15 @@
-import { IGenericResponse } from './../domain/core.entity';
+import { IGenericResponse } from '../../domain/core.entity';
 import { Observable } from 'rxjs';
-import { MessagesService } from './../services/messages.service';
+import { MessagesService } from '../../services/messages.service';
 import { ToastrService } from 'ngx-toastr';
-import { Component } from "@angular/core";
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-index',
   template: '',
   styles: []
 })
-export class IndexBaseComponent<T> {
+export class IndexBaseComponent<T> implements OnInit {
   items: T[] = [];
   selectedItem!: T;
   isUpdate!: boolean;
@@ -27,7 +27,7 @@ export class IndexBaseComponent<T> {
     private readonly messagesService: MessagesService,
   ) { }
 
-  init(): void {
+  ngOnInit(): void {
     this.getAll$.subscribe(res => this.items = res.value);
   }
 

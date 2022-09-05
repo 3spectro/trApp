@@ -51,7 +51,7 @@
   </div>
 </div>
 
-<app-application-side-bar [item]="selectedItem" (save)="saveItem($event)"></app-application-side-bar>
+<app-application-side-bar [item]="selectedItem" (save)="save($event)"></app-application-side-bar>
 <app-confirmation (confirm)="deleteItem()">
   <div modal-title>
     Confirmation!
