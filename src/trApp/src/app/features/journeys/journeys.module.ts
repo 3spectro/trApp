@@ -1,6 +1,6 @@
 import { JourneysRoutingModule } from './journeys-routing.module';
 import { SharedModule } from './../../shared/modules/shared.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GoogleMapsModule } from '@angular/google-maps';
@@ -34,6 +34,7 @@ import { HttpClientJsonpModule, HttpClientModule } from '@angular/common/http';
     GoogleMapsModule,
     HttpClientModule,
     HttpClientJsonpModule,
+    FormsModule
   ]
 })
 export class JourneysModule { }

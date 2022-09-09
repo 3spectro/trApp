@@ -1,0 +1,86 @@
+{
+  "language": "Idioma",
+	"application": {
+		"title": "Aplicaciones",
+		"add": "Nueva aplicacion",
+    "entity": "Applicación",
+		"table": {
+			"name": "Nombre",
+			"url": "URL"
+		},
+		"sidebar": {
+			"applicationName": "Nombre de la app",
+			"url": "URL",
+      "validations": {
+        "url": "Este campo es una URL. Ej. https://www.google.com"
+      }
+		}
+	},
+	"guest": {
+		"title": "Invitados",
+		"add": "Nuevo invitado",
+    "entity": "Invitado",
+		"table": {
+			"name": "Nombre",
+			"passport": "Pasaporte",
+			"email": "Email",
+			"celPhone": "Celular"
+		},
+		"sidebar": {
+			"firstname": "Nombre",
+      "lastname": "Apellido",
+      "passport": "Pasaporte",
+      "email": "Email",
+      "celphone": "Telefono"
+		}
+	},
+  "journey": {
+		"title": "Viajes",
+		"add": "Nuevo Viaje",
+    "entity": "Viaje",
+    "status": {
+      "pending": "Pendiente",
+      "incourse": "En curso",
+      "complete": "Completado"
+    },
+		"table": {
+			"name": "Nombre",
+			"startdate": "Fecha de Inicio",
+			"enddate": "Fecha de Finalización",
+      "status": "Estado",
+      "undefineddate": "No ah sido especificada aun"
+		},
+		"sidebar": {
+			"name": "Nombre",
+			"startdate": "Fecha de Inicio",
+			"enddate": "Fecha de Finalización",
+      "travelers": "Acompañantes",
+      "travelersgrid": {
+        "sel": "Sel.",
+        "name": "Nombre"
+      },
+      "startdatedefined": "¿Esta definida la fecha de inicio?",
+      "enddatedefined": "¿Esta definida la fecha de finalización?",
+      "travelginalone": "Viajo solo!",
+      "validations": {
+        "travelers": "Necesitas seleccionar al menos un acompañante"
+      }
+		}
+	},
+	"generics": {
+		"confirmation": {
+			"title": "Se requiere confiramción!",
+      "messages": {
+        "delete": "¿Esta seguro que desea eliminar este item?"
+      }
+		},
+    "validations": {
+      "fieldrequired": "Este campo es requerido",
+      "validfield": "Bien!"
+    },
+    "buttons": {
+      "save": "Guardar",
+      "close": "Cerrar"
+    }
+	}
+}

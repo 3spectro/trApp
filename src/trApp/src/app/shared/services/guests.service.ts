@@ -53,4 +53,7 @@ export interface IGuest {
   passport?: string;
   email?: string;
   celPhone?: string;
+
+  // UI properties
+  isSelected?: boolean;
 }

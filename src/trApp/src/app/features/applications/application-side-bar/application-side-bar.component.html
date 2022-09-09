@@ -1,6 +1,6 @@
 <div class="offcanvas offcanvas-end" tabindex="-1" id="appSideBar" aria-labelledby="appSideBarLabel">
   <div class="offcanvas-header border-bottom border-secondary">
-    <h4 class="offcanvas-title" id="appSideBarLabel">Application</h4>
+    <h4 class="offcanvas-title" id="appSideBarLabel">{{ "application.title" | translate }}</h4>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" #close hidden></button>
     <button type="button" class="btn-close" aria-label="Close" (click)="closeSlider()"></button>
   </div>
@@ -8,37 +8,37 @@
     <div>
       <form [formGroup]="form" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
         <div class="mb-3">
-          <label for="appName" class="form-label">Application Name</label>
+          <label for="appName" class="form-label">{{ "application.sidebar.applicationName" | translate }}</label>
           <input type="text" class="form-control" id="appName" required formControlName="name" name="name" [ngClass]="getValidationClass(form.get('name'))">
           <div class="valid-feedback" style="display: block;" *ngIf="form.get('name')?.touched && form.get('name')?.valid">
-            Looks good!
+            {{ "generics.validations.validfield" | translate }}
           </div>
           <div class="invalid-feedback" style="display: block;" *ngIf="form.get('name')?.touched && form.get('name')?.errors?.['required']">
-            This field is required
+            {{ "generics.validations.fieldrequired" | translate }}
           </div>
           <div class="invalid-feedback" style="display: block;" *ngIf="form.get('name')?.touched && form.get('name')?.errors?.['incorrect']">
             {{form.get('name')?.errors?.['message']}}
           </div>
         </div>
         <div class="mb-3">
-          <label for="url" class="form-label">Url</label>
+          <label for="url" class="form-label">{{ "application.sidebar.url" | translate }}</label>
           <input type="url" class="form-control" id="url" required formControlName="url" name="url" [ngClass]="getValidationClass(form.get('url'))">
           <div class="valid-feedback" style="display: block;" *ngIf="form.get('url')?.touched && form.get('url')?.valid">
-            Looks good!
+            {{ "generics.validations.validfield" | translate }}
           </div>
           <div class="invalid-feedback" style="display: block;" *ngIf="form.get('url')?.touched && form.get('url')?.errors?.['required']">
-            This field is required
+            {{ "generics.validations.fieldrequired" | translate }}
           </div>
           <div class="invalid-feedback" style="display: block;" *ngIf="form.get('url')?.touched && form.get('url')?.errors?.['pattern']">
-            This field is an url. ex. https://www.google.com
+            {{ "application.sidebar.validations.url" | translate }}
           </div>
           <div class="invalid-feedback" style="display: block;" *ngIf="form.get('url')?.touched && form.get('url')?.errors?.['incorrect']">
             {{form.get('url')?.errors?.['message']}}
           </div>
         </div>
         <div class="text-end">
-          <button type="button" class="btn btn-secondary me-2" (click)="closeSlider()">Close</button>
-          <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Save</button>
+          <button type="button" class="btn btn-secondary me-2" (click)="closeSlider()">{{ "generics.buttons.close" | translate }}</button>
+          <button type="submit" class="btn btn-primary" [disabled]="form.invalid">{{ "generics.buttons.save" | translate }}</button>
         </div>
       </form>
     </div>

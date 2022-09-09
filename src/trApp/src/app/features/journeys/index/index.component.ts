@@ -1,10 +1,15 @@
-import { GuestsService, IGuest } from './../../../shared/services/guests.service';
+import { TranslateApiDataService } from './../../../shared/services/translate-api-data.service';
+import { IGuest } from './../../../shared/services/guests.service';
+import { I201ItemResponse } from './../../../shared/components/side-bar-base/side-bar-base.component';
+import { IGenericResponse } from './../../../shared/domain/core.entity';
+import { TranslateService } from '@ngx-translate/core';
+import { IndexBaseComponent } from './../../../shared/components/index-base/index-base.component';
 import { Router } from '@angular/router';
 import { JourneysService, IJourney } from './../../../shared/services/journeys.service';
 import { MessagesService } from './../../../shared/services/messages.service';
 import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit } from '@angular/core';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 
 const NAME = 'Travel';
 
@@ -13,8 +18,8 @@ const NAME = 'Travel';
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.css']
 })
-export class IndexComponent implements OnInit {
-  items?: IJourney[] = [];
+export class IndexComponent extends IndexBaseComponent<IJourney> implements OnInit {
+  /*items?: IJourney[] = [];
   guests?: IGuest[] = [];
   selectedId!: number;
 
@@ -27,17 +32,17 @@ export class IndexComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    /*forkJoin({
+    forkJoin({
       travels: this.journeysService.get$(),
       guests: this.guestsService.get$()
     }).subscribe(res => {
-      if (res.travels.status === 200) {
+      if (res.guests.status) {
         this.items = res.travels.value;
       }
-      if (res.guests.status === 200) {
+      if (res.guests.status) {
         this.guests = res.guests.value;
       }
-    });*/
+    });
   }
 
   selectItem(id: number): void {
@@ -51,11 +56,66 @@ export class IndexComponent implements OnInit {
 
   delete(): void {
     this.journeysService.delete$(this.selectedId).subscribe(res => {
-      if (res.status === 200) {
+      if (res.status) {
         this.items = this.items?.filter(x => x.id !== this.selectedId);
         this.toastr.success(this.messagesService.getDeleteMessage(NAME));
       }
     })
+  }
+
+  */
+  constructor(
+    toastr: ToastrService,
+    messagesService: MessagesService,
+    translateService: TranslateService,
+    translateApiDataService: TranslateApiDataService,
+    private readonly router: Router,
+    private readonly service: JourneysService
+  ) {
+    super(toastr, messagesService, translateService, translateApiDataService);
+    this.name = 'Journey';
+    this.getAll$ = this.service.get$();
+    this.setGetItemFromId();
+    this.getEmpty$ = this.service.getEmpty();
+    this.setDelete();
+    this.setRemoveFromArray();
+    this.setTranslate();
+  }
+
+  private setGetItemFromId(): void {
+    this.getIndexFromId$ = new Observable<number>(observer => {
+      observer.next(this.items?.findIndex(x => x.id == this.selectedItem?.id));
+      observer.complete();
+    });
+  }
+
+  private setDelete(): void {
+    this.delete$ = new Observable<IGenericResponse<boolean>>(observer => {
+      this.service.delete$(this.selectedItem?.id).subscribe(x => {
+        observer.next(x);
+        observer.complete();
+      });
+    });
+  }
+
+  private setRemoveFromArray(): void {
+    this.removeFromArray$ = new Observable<IJourney[]>(observer => {
+      observer.next(this.items?.filter(x => x.id !== this.selectedItem?.id));
+      observer.complete();
+    });
+  }
+
+  private setTranslate(): void {
+    this.translate$ = new Observable<void>(observer => {
+      this.service.translate(this.items);
+      observer.next();
+      observer.complete();
+    });
+  }
+
+  save(res: I201ItemResponse<IJourney>) {
+    res.value.id = res.id;
+    this.saveItem(res.value);
   }
 
   goToDetails(id: number) {

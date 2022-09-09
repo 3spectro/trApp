@@ -1,3 +1,5 @@
+import { TranslateApiDataService } from './../../../shared/services/translate-api-data.service';
+import { TranslateService } from '@ngx-translate/core';
 import { I201ItemResponse } from './../../../shared/components/side-bar-base/side-bar-base.component';
 import { IGenericResponse } from './../../../shared/domain/core.entity';
 import { Observable } from 'rxjs';
@@ -17,10 +19,12 @@ const NAME = 'Guest';
 export class IndexComponent  extends IndexBaseComponent<IGuest> {
   constructor(
     toastr: ToastrService,
-    private readonly service: GuestsService,
-    messagesService: MessagesService
+    messagesService: MessagesService,
+    translateService: TranslateService,
+    translateApiDataService: TranslateApiDataService,
+    private readonly service: GuestsService
   ) {
-    super(toastr, messagesService);
+    super(toastr, messagesService, translateService, translateApiDataService);
     this.name = NAME;
     this.getAll$ = this.service.get$();
     this.getIndexFromId$ = new Observable<number>(observer => {

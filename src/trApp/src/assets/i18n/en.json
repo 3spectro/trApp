@@ -1,0 +1,86 @@
+{
+  "language": "Language",
+	"application": {
+		"title": "Applications",
+		"add": "New Application",
+    "entity": "Application",
+		"table": {
+			"name": "Name",
+			"url": "URL"
+		},
+		"sidebar": {
+			"applicationName": "Application Name",
+			"url": "URL",
+      "validations": {
+        "url": "This field is an url. ex. https://www.google.com"
+      }
+		}
+	},
+	"guest": {
+		"title": "Guests",
+		"add": "New Guest",
+    "entity": "Guest",
+		"table": {
+			"name": "Name",
+			"passport": "Passport",
+			"email": "Email",
+			"celphone": "Cel Phone"
+		},
+		"sidebar": {
+			"firstname": "First Name",
+      "lastname": "Last Name",
+      "passport": "Passport",
+      "email": "Email",
+      "celphone": "Cel Phone"
+		}
+	},
+  "journey": {
+		"title": "Jouerneys",
+		"add": "New Journey",
+    "entity": "Journey",
+    "status": {
+      "pending": "Pending",
+      "incourse": "In course",
+      "complete": "Complete"
+    },
+		"table": {
+			"name": "Name",
+			"startdate": "Start Date",
+			"enddate": "End Date",
+      "status": "Status",
+      "undefineddate": "Not defined yet"
+		},
+		"sidebar": {
+			"name": "Name",
+			"startdate": "Start Date",
+			"enddate": "End Date",
+      "travelers": "Travelers",
+      "travelersgrid": {
+        "sel": "Sel.",
+        "name": "Name"
+      },
+      "startdatedefined": "Is already defined the start date?",
+      "enddatedefined": "Is already defined the end date?",
+      "travelginalone": "I'm traveling alone",
+      "validations": {
+        "travelers": "You need to add at less one traveler to your journey"
+      }
+		}
+	},
+	"generics": {
+		"confirmation": {
+			"title": "Confirmation!",
+      "messages": {
+        "delete": "Are you sure you want to delete this {{value}}?"
+      }
+		},
+    "validations": {
+      "fieldrequired": "This field is required",
+      "validfield": "Looks good!"
+    },
+    "buttons": {
+      "save": "Save",
+      "close": "Close"
+    }
+	}
+}

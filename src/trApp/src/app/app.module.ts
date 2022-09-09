@@ -1,3 +1,5 @@
+import { TranslateApiDataService } from './shared/services/translate-api-data.service';
+import { NgxTranslateModule } from './translate/translate.module';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -34,6 +36,7 @@ import { LoginComponent } from './login/login.component';
       progressBar: true,
       progressAnimation: 'decreasing'
     }),
+    NgxTranslateModule
   ],
   providers: [
     {
@@ -46,7 +49,8 @@ import { LoginComponent } from './login/login.component';
       useClass: ResponseInterceptorService,
       multi: true
     },
-    LoginGuard
+    LoginGuard,
+    TranslateApiDataService
   ],
   bootstrap: [AppComponent]
 })

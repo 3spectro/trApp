@@ -27,11 +27,6 @@ export class SideBarBaseComponent<T> implements OnInit, AfterViewInit, OnChanges
   initForm$!: Observable<void>;
   setIsUpdate$!: Observable<void>;
 
-  save$!: Observable<any>;
-  update$!: Observable<any>;
-  getItem$!: Observable<T>;
-  setIdToItem$!: Observable<void>;
-
   name!: string;
 
   constructor(
@@ -41,10 +36,8 @@ export class SideBarBaseComponent<T> implements OnInit, AfterViewInit, OnChanges
   ) { }
 
   ngOnInit(): void {
-    debugger;
     this.initForm$.subscribe();
     combineLatest([this.afterViewInit$, this.onChanges$]).pipe(takeUntil(this.onDestroy$)).subscribe(() => {
-      debugger;
       this.form.patchValue(this.item);
       this.setIsUpdate$.subscribe();
     });
@@ -64,7 +57,7 @@ export class SideBarBaseComponent<T> implements OnInit, AfterViewInit, OnChanges
   }
 
   getValidationClass(input: any): string {
-    if (!input.touched) return '';
+    if (!input.touched || input.disabled) return '';
     return input.invalid ? 'invalid-input' : 'valid-input';
   }
 
@@ -78,16 +71,13 @@ export class SideBarBaseComponent<T> implements OnInit, AfterViewInit, OnChanges
   }
 
   private processOkResult(item: T, id:number): void {
-    this.setIdToItem$.subscribe(() => {
-      debugger;
-      if (this.isUpdate) {
-        this.toastr.success(this.messagesService.getUpdateMessage(this.name));
-      } else {
-        this.toastr.success(this.messagesService.getCreateMessage(this.name));
-      }
-      this.save.emit({ id: id, value: item});
-      this.closeSlider();
-    })
+    if (this.isUpdate) {
+      this.toastr.success(this.messagesService.getUpdateMessage(this.name));
+    } else {
+      this.toastr.success(this.messagesService.getCreateMessage(this.name));
+    }
+    this.save.emit({ id: id, value: item});
+    this.closeSlider();
   }
 
   closeSlider() {

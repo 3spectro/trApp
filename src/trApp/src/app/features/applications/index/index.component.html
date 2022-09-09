@@ -2,22 +2,22 @@
   <div class="col-11 g-2">
     <div class="card">
       <div class="card-header">
-        <h2>Applications</h2>
+        <h2>{{ "application.title" | translate }}</h2>
       </div>
       <div class="card-body text-end border-bottom border-secondary">
         <button class="btn btn-outline-success" type="button" data-bs-toggle="offcanvas" data-bs-target="#appSideBar" aria-controls="appSideBar" (click)="newItem()">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
             <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
           </svg>
-          New Application
+          {{ "application.add" | translate }}
         </button>
       </div>
       <div class="card-body">
         <table class="table table-hover">
           <thead>
             <tr>
-              <th scope="col"> Name</th>
-              <th scope="col"> Url</th>
+              <th scope="col"> {{ "application.table.name" | translate }}</th>
+              <th scope="col"> {{ "application.table.url" | translate }}</th>
               <th scope="col" [width]="100"></th>
             </tr>
           </thead>
@@ -54,9 +54,9 @@
 <app-application-side-bar [item]="selectedItem" (save)="save($event)"></app-application-side-bar>
 <app-confirmation (confirm)="deleteItem()">
   <div modal-title>
-    Confirmation!
+    {{ "generics.confirmation.title" | translate }}
   </div>
   <div modal-message>
-    Are you sure you want to delete this application?
+    {{ "generics.confirmation.messages.delete" | translate : confirmationMessageParam}}
   </div>
 </app-confirmation>

@@ -44,3 +44,7 @@ Google Maps
 -----------
 https://www.npmjs.com/package/@angular/google-maps
 https://github.com/angular/components/tree/main/src/google-maps#readme
+
+Translation
+-----------
+https://github.com/ngx-translate/core

@@ -10,7 +10,7 @@ namespace TrApi.Controllers
 {
   [Route("api/[controller]")]
   [ApiController]
-  [Authorize]
+  // [Authorize]
   public class GuestsController : ControllerBase
   {
 

@@ -21,7 +21,6 @@ export class AuthService {
   login(username: string, password: string): Observable<boolean> {
     return new Observable<boolean>((observer) => {
       this.http.post<IApiResponse<IUser>>(URL + '/login', { username, password }).subscribe(response => {
-        debugger;
         if (response.value && response.value.token) {
           this.user = response.value;
           localStorage.setItem('user', JSON.stringify(this.user));

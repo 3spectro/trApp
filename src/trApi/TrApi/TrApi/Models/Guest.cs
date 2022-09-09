@@ -6,6 +6,10 @@ namespace TrApi.Models
 {
   public class GuestEntity : IEntity
   {
+    public GuestEntity()
+    {
+      this.Journeys = new HashSet<JourneyEntity>();
+    }
 
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -13,15 +17,15 @@ namespace TrApi.Models
 
     [Required]
     [Column(TypeName = "nvarchar(50)")]
-    public string FirstName { get; set; }
+    public string? FirstName { get; set; }
 
     [Required]
     [Column(TypeName = "nvarchar(50)")]
-    public string LastName { get; set; }
+    public string? LastName { get; set; }
 
     [Required]
     [Column(TypeName = "nvarchar(9)")]
-    public string Passport { get; set; }
+    public string? Passport { get; set; }
 
     [Column(TypeName = "nvarchar(50)")]
     public string? Email { get; set; }
@@ -31,7 +35,9 @@ namespace TrApi.Models
 
     public int UserId { get; set; }
     [ForeignKey("UserId")]
-    public virtual UserEntity User { get; set; }
+    public virtual UserEntity? User { get; set; }
+
+    public virtual ICollection<JourneyEntity>? Journeys { get; set; }
 
   }
 

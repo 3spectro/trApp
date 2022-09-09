@@ -1,4 +1,5 @@
 export enum Features {
   APPLICATION = 'Application',
-  GUEST = 'Guest'
+  GUEST = 'Guest',
+  JOURNEY = 'Journey',
 }

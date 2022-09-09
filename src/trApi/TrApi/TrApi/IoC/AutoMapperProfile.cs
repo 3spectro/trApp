@@ -11,6 +11,7 @@ namespace TrApi.IoC
       CreateMap<ApplicationEntity, ApplicationModel>();
       CreateMap<GuestEntity, GuestModel>();
       CreateMap<UserEntity, UserModel>();
+      CreateMap<JourneyEntity, JourneyModel>();
     }
   }
 }

@@ -14,3 +14,7 @@ export interface IFieldMessage {
   field: string;
   message: string;
 }
+
+export interface ITranslate {
+  value: string;
+}

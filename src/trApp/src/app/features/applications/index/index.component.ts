@@ -1,3 +1,6 @@
+import { TranslateApiDataService } from './../../../shared/services/translate-api-data.service';
+import { Features } from './../../../shared/domain/enums/features.enum';
+import { TranslateService } from '@ngx-translate/core';
 import { I201ItemResponse } from './../../../shared/components/side-bar-base/side-bar-base.component';
 import { IGenericResponse } from './../../../shared/domain/core.entity';
 import { Observable } from 'rxjs';
@@ -16,11 +19,13 @@ export class IndexComponent extends IndexBaseComponent<IApplication> {
 
   constructor(
     toastr: ToastrService,
+    messagesService: MessagesService,
+    translateService: TranslateService,
+    translateApiDataService: TranslateApiDataService,
     private readonly service: ApplicationsService,
-    messagesService: MessagesService
   ) {
-    super(toastr, messagesService);
-    this.name = 'Application';
+    super(toastr, messagesService, translateService, translateApiDataService);
+    this.name = Features.APPLICATION;
     this.getAll$ = this.service.get$();
     this.getIndexFromId$ = new Observable<number>(observer => {
       observer.next(this.items?.findIndex(x => x.id == this.selectedItem?.id));

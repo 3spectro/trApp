@@ -10,6 +10,8 @@ namespace TrApi.Data
     public DbSet<UserEntity> Users { get; set; }
     public DbSet<ApplicationEntity> Applications { get; set; }
     public DbSet<GuestEntity> Guests { get; set; }
+    public DbSet<JourneyEntity> Journeys { get; set; }
+    public DbSet<EventEntity> Events { get; set; }
 
   }
 }

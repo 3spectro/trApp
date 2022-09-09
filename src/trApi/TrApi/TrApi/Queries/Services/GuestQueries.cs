@@ -64,6 +64,7 @@ namespace TrApi.Queries.Services
           existintItem.Email = entity.Email;
           existintItem.Phone = entity.Phone;
           await _context.SaveChangesAsync();
+          resp.Value = id;
         }
         else
           resp.SetNotFound();
@@ -76,26 +77,13 @@ namespace TrApi.Queries.Services
       var res = IApiResponse<int>.GetDefault(action);
       var isInvalidModel = items.Where(app => app.Passport == entity.Passport).Any();
       if (isInvalidModel)
-      {
-        res = new IApiResponse<int>
-        {
-          Status = (int)ResponseStatus.ERROR_ENTITY_VALIDATION,
-          Message = new FieldMessage("passport", "There is already a guest with the same passport"),
-          Value = 0
-        };
-      }
+        res.SetErrorEntityValidation("passport", "There is already a guest with the same passport");
+      
       else
       {
         isInvalidModel = items.Where(app => app.Email == entity.Email).Count() > 0;
         if (isInvalidModel)
-        {
-          res = new IApiResponse<int>
-          {
-            Status = (int)ResponseStatus.ERROR_ENTITY_VALIDATION,
-            Message = new FieldMessage("email", "There is already a guest with the same email"),
-            Value = 0
-          };
-        }
+          res.SetErrorEntityValidation("email", "There is already a guest with the same email");
       }
       return res;
     }

@@ -29,6 +29,7 @@ builder.Services.AddScoped<IApplicationQueries, ApplicationQueries>();
 builder.Services.AddScoped<IAuthQueries, AuthQueries>();
 builder.Services.AddScoped<IGuestQueries, GuestQueries>();
 builder.Services.AddScoped<IUserQueries, UserQueries>();
+builder.Services.AddScoped<IJourneyQueries, JourneyQueries>();
 
 builder.Services.AddCors(actions => actions.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 

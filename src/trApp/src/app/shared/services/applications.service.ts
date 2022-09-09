@@ -2,7 +2,7 @@ import { IGenericResponse } from './../domain/core.entity';
 import { HttpClient } from '@angular/common/http';
 import { environment } from './../../../environments/environment';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
 
 const URL = `${environment.apiBaseUrl}Applications`;
 
@@ -32,14 +32,6 @@ export class ApplicationsService {
   save$ = (item: IApplication): Observable<IGenericResponse<number>> => {
     return this.http.post<IGenericResponse<number>>(URL, item);
   }
-
-  /*getEmpty(): IApplication {
-    return {
-      id: -1,
-      name: '',
-      url: ''
-    };
-  }*/
 
   getEmpty(): Observable<IApplication> {
     return new Observable(observer => {

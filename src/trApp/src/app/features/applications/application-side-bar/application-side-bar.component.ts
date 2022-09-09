@@ -2,20 +2,19 @@ import { SideBarBaseComponent } from './../../../shared/components/side-bar-base
 import { IGenericResponse } from './../../../shared/domain/core.entity';
 import { ToastrService } from 'ngx-toastr';
 import { IApplication, ApplicationsService } from './../../../shared/services/applications.service';
-import { AfterViewInit, Component, OnChanges, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { Component, Renderer2 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { MessagesService } from 'src/app/shared/services/messages.service';
 import { RegEx } from 'src/app/shared/domain/enums/regex.enum'
-
-const NAME = 'Application';
+import { Features } from 'src/app/shared/domain/enums/features.enum';
 
 @Component({
   selector: 'app-application-side-bar',
   templateUrl: './application-side-bar.component.html',
   styleUrls: ['./application-side-bar.component.css']
 })
-export class ApplicationSideBarComponent extends SideBarBaseComponent<IApplication> implements OnInit, AfterViewInit, OnChanges, OnDestroy {
+export class ApplicationSideBarComponent extends SideBarBaseComponent<IApplication> {
 
   constructor(
     renderer: Renderer2,
@@ -25,7 +24,7 @@ export class ApplicationSideBarComponent extends SideBarBaseComponent<IApplicati
     private readonly applicationsService: ApplicationsService,
   ) {
     super(renderer, toastr, messagesService);
-    this.name = 'Application';
+    this.name = Features.APPLICATION;
     this.initForm();
     this.setIsUpdate();
   }

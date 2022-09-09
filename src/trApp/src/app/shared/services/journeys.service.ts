@@ -1,89 +1,96 @@
-import { IGuest } from './guests.service';
-import { LoadingBarService } from './loading-bar.service';
+import { TranslateService } from '@ngx-translate/core';
+import { IGenericResponse } from './../domain/core.entity';
+import { HttpClient } from '@angular/common/http';
+import { environment } from './../../../environments/environment';
 import { Injectable } from '@angular/core';
-import { of, Observable, timer } from 'rxjs';
-import { IApiResponse } from '../domain/core.entity';
+import { Observable, map, forkJoin } from 'rxjs';
+import { JourneysStatus } from '../domain/enums/journeys-status.enum';
+
+const URL = `${environment.apiBaseUrl}Journeys`;
 
 @Injectable({
   providedIn: 'root'
 })
 export class JourneysService {
 
-  items: IJourney[] = [
-    {
-      id: 1,
-      name: 'Europa 2018',
-      startDate: new Date('May 17, 2018'),
-      endDate: new Date('July 20, 2018'),
-      guests: [
-        {
-          id: 1,
-          firstName: 'Esteban',
-          lastName: 'Reynoso',
-          passport: 'AAE988238',
-          email: 'ereynoso.931@gmail.com',
-          celPhone: '+5493513996282'
-        },
-        {
-          id: 2,
-          firstName: 'Marcos',
-          lastName: 'Savy',
-          passport: 'AAF365149',
-          email: 'ereynoso.931@gmail.com',
-          celPhone: '+5493513678532'
-        }
-      ],
-    }
-  ];
-
   constructor(
-    private readonly loadingBarService: LoadingBarService
+    private readonly http: HttpClient,
+    private readonly translateService: TranslateService
   ) { }
 
-  get$ = (): Observable<IApiResponse<IJourney[]>> => {
-    this.loadingBarService.show();
-    timer(1000).subscribe(() => this.loadingBarService.hidde());
-    return of({
-      status: 200,
-      message: undefined,
-      value: this.items,
+  get$ = (): Observable<IGenericResponse<IJourney[]>> => {
+    return forkJoin([
+      this.translateService.get(JourneysStatus.PENDING),
+      this.translateService.get(JourneysStatus.IN_COURSE),
+      this.translateService.get(JourneysStatus.COMPLETE),
+      this.http.get<IGenericResponse<IJourney[]>>(URL)]).pipe(
+        map(([pending, incourse,complete, journeys]) => {
+          const today = new Date();
+          journeys.value.forEach(item => {
+            if (!item.startDate || item.startDate < today ) {
+              item.status = JourneysStatus.PENDING;
+              item.statusValue = pending;
+            } else {
+              if (item.startDate > today && (!item.endDate || item.endDate > today)) {
+                item.status = JourneysStatus.IN_COURSE;
+                item.statusValue = incourse;
+              }
+              else {
+                item.status = JourneysStatus.COMPLETE;
+                item.statusValue = complete;
+              }
+            }
+          })
+          return journeys;
+        })
+      )
+  }
+
+  delete$ = (id: number): Observable<IGenericResponse<boolean>> => {
+    return this.http.post<IGenericResponse<boolean>>(URL + '/delete', id);
+  }
+
+  update$ = (item: IJourney): Observable<IGenericResponse<number>> => {
+    return this.http.put<IGenericResponse<number>>(URL, item);
+  }
+
+  save$ = (item: IJourney): Observable<IGenericResponse<number>> => {
+    return this.http.post<IGenericResponse<number>>(URL, item);
+  }
+
+  getEmpty(): Observable<IJourney> {
+    return new Observable(observer => {
+      observer.next({
+        id: -1,
+        name: '',
+        startDate: undefined,
+        endDate: undefined,
+        guests: []
+      });
+      observer.complete();
     });
   }
 
-  delete$ = (id: number): Observable<IApiResponse<null>> => {
-    this.loadingBarService.show();
-    timer(1000).subscribe(() => this.loadingBarService.hidde());
-    this.items = this.items.filter(x => x.id !== id);
-    return of({
-      status: 200,
-      message: undefined,
-      value: null
-    });
-  }
-
-  update$ = (item: IJourney): Observable<IApiResponse<IJourney>> => {
-    this.loadingBarService.show();
-    timer(1000).subscribe(() => this.loadingBarService.hidde());
-    const index = this.items.findIndex(x => x.id === item.id);
-    this.items[index] = item;
-    return of({
-      status: 200,
-      message: undefined,
-      value: item,
-    });
-  }
-
-  save$ = (item: IJourney): Observable<IApiResponse<IJourney>> => {
-    this.loadingBarService.show();
-    timer(1000).subscribe(() => this.loadingBarService.hidde());
-    const response: IApiResponse<IJourney> = {
-      status: 201,
-      message: undefined,
-      value: {} as IJourney,
-    }
-    item.id = this.items.length;
-    response.value = item;
-    return of(response);
+  translate(items: IJourney[]): void {
+    forkJoin([
+      this.translateService.get(JourneysStatus.PENDING),
+      this.translateService.get(JourneysStatus.IN_COURSE),
+      this.translateService.get(JourneysStatus.COMPLETE)
+    ]).subscribe(([pending, incourse,complete]) => {
+      items.forEach(item => {
+        switch (item.status) {
+          case JourneysStatus.PENDING:
+            item.statusValue = pending;
+            break;
+          case JourneysStatus.IN_COURSE:
+            item.statusValue = incourse;
+            break;
+          case JourneysStatus.COMPLETE:
+            item.statusValue = complete;
+            break;
+        };
+      });
+    })
   }
 }
 
@@ -92,5 +99,12 @@ export interface IJourney {
   name: string;
   startDate?: Date;
   endDate?: Date;
-  guests?: IGuest[];
+  guests?: number[];
+  status?: string;
+  statusValue?: string;
+}
+
+interface IJourneyStatus {
+  key: string;
+  value: string;
 }

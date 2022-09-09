@@ -36,5 +36,11 @@ namespace TrApi.Queries.Interfaces
       Status = (int)ResponseStatus.ERROR_NOT_FOUND;
       Message = new FieldMessage(String.Empty, GenericMessages.ERROR_NOT_FOUND);
     }
+
+    public void SetErrorEntityValidation(string field, string message)
+    {
+      this.Status = (int)ResponseStatus.ERROR_ENTITY_VALIDATION;
+      this.Message = new FieldMessage(field, message);
+    }
   }
 }

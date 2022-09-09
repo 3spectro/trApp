@@ -2,24 +2,24 @@
   <div class="col-11 g-2">
     <div class="card">
       <div class="card-header">
-        <h2>Guests</h2>
+        <h2>{{ "guest.title" | translate }}</h2>
       </div>
       <div class="card-body text-end border-bottom border-secondary">
         <button class="btn btn-outline-success" type="button" data-bs-toggle="offcanvas" data-bs-target="#sideBar" aria-controls="sideBar" (click)="newItem()">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
             <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
           </svg>
-          New Guest
+          {{ "guest.add" | translate }}
         </button>
       </div>
       <div class="card-body">
         <table class="table table-hover">
           <thead>
             <tr>
-              <th scope="col"> Name</th>
-              <th scope="col"> Passport</th>
-              <th scope="col"> Email</th>
-              <th scope="col"> Cel Phone</th>
+              <th scope="col"> {{ "guest.table.name" | translate }}</th>
+              <th scope="col"> {{ "guest.table.passport" | translate }}</th>
+              <th scope="col"> {{ "guest.table.email" | translate }}</th>
+              <th scope="col"> {{ "guest.table.celphone" | translate }}</th>
               <th scope="col" [width]="100"></th>
             </tr>
           </thead>
@@ -65,9 +65,9 @@
 
 <app-confirmation (confirm)="deleteItem()">
   <div modal-title>
-    Confirmation!
+    {{ "generics.confirmation.title" | translate }}
   </div>
   <div modal-message>
-    Are you sure you want to delete this guest?
+    {{ "generics.confirmation.messages.delete" | translate : confirmationMessageParam}}
   </div>
 </app-confirmation>

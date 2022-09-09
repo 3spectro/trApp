@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrApi.Data;
 
@@ -11,9 +12,10 @@ using TrApi.Data;
 namespace TrApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220906194831_AddJourneysAndEventsInitial")]
+    partial class AddJourneysAndEventsInitial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +23,6 @@ namespace TrApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("GuestEntityJourneyEntity", b =>
-                {
-                    b.Property<int>("GuestsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("JourneysId")
-                        .HasColumnType("int");
-
-                    b.HasKey("GuestsId", "JourneysId");
-
-                    b.HasIndex("JourneysId");
-
-                    b.ToTable("GuestEntityJourneyEntity");
-                });
 
             modelBuilder.Entity("TrApi.Models.ApplicationEntity", b =>
                 {
@@ -96,6 +83,9 @@ namespace TrApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int?>("JourneyEntityId")
+                        .HasColumnType("int");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
@@ -111,6 +101,8 @@ namespace TrApi.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("JourneyEntityId");
 
                     b.HasIndex("UserId");
 
@@ -132,10 +124,10 @@ namespace TrApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTime?>("StartDate")
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -178,21 +170,6 @@ namespace TrApi.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("GuestEntityJourneyEntity", b =>
-                {
-                    b.HasOne("TrApi.Models.GuestEntity", null)
-                        .WithMany()
-                        .HasForeignKey("GuestsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TrApi.Models.JourneyEntity", null)
-                        .WithMany()
-                        .HasForeignKey("JourneysId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("TrApi.Models.ApplicationEntity", b =>
                 {
                     b.HasOne("TrApi.Models.UserEntity", "User")
@@ -213,6 +190,10 @@ namespace TrApi.Migrations
 
             modelBuilder.Entity("TrApi.Models.GuestEntity", b =>
                 {
+                    b.HasOne("TrApi.Models.JourneyEntity", null)
+                        .WithMany("Guests")
+                        .HasForeignKey("JourneyEntityId");
+
                     b.HasOne("TrApi.Models.UserEntity", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -226,7 +207,9 @@ namespace TrApi.Migrations
                 {
                     b.HasOne("TrApi.Models.UserEntity", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -234,6 +217,8 @@ namespace TrApi.Migrations
             modelBuilder.Entity("TrApi.Models.JourneyEntity", b =>
                 {
                     b.Navigation("Events");
+
+                    b.Navigation("Guests");
                 });
 
             modelBuilder.Entity("TrApi.Models.UserEntity", b =>

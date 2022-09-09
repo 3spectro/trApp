@@ -1,0 +1,10 @@
+.invalid-checkbox
+{
+	-webkit-appearance:none;
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    background: #FFFFFF;
+	border: 1px solid rgba(220,220,225,1);
+  border: 1px solid rgb(255, 50, 50);
+}
