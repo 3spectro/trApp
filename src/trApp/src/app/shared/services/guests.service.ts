@@ -1,5 +1,5 @@
 import { IGenericResponse } from './../domain/core.entity';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from './../../../environments/environment';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
@@ -17,6 +17,12 @@ export class GuestsService {
 
   get$ = (): Observable<IGenericResponse<IGuest[]>> => {
     return this.http.get<IGenericResponse<IGuest[]>>(URL);
+  }
+
+  getByJourney$ = (id: number): Observable<IGenericResponse<IGuest[]>> => {
+    var params = new HttpParams()
+    .set('id', id)
+    return this.http.get<IGenericResponse<IGuest[]>>(URL + '/journey', {params: params});
   }
 
   delete$ = (id: number): Observable<IGenericResponse<boolean>> => {

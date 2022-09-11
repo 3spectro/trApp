@@ -6,6 +6,7 @@ import { NgModule } from '@angular/core';
 import { ConfirmationComponent } from '../components/modals/confirmation/confirmation.component';
 import { PaginationComponent } from '../components/pagination/pagination.component';
 import { SideBarBaseComponent } from '../components/side-bar-base/side-bar-base.component';
+import { GuestGridComponent } from '../components/guest-grid/guest-grid.component';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { SideBarBaseComponent } from '../components/side-bar-base/side-bar-base.
     PaginationComponent,
     IndexBaseComponent,
     SideBarBaseComponent,
+    GuestGridComponent,
     DisableControlDirective
   ],
   exports: [
@@ -20,11 +22,13 @@ import { SideBarBaseComponent } from '../components/side-bar-base/side-bar-base.
     PaginationComponent,
     IndexBaseComponent,
     SideBarBaseComponent,
+    GuestGridComponent,
+    DisableControlDirective,
     TranslateModule,
-    DisableControlDirective
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    TranslateModule
   ],
   providers: [],
 })

@@ -13,7 +13,8 @@
         </button>
       </div>
       <div class="card-body">
-        <table class="table table-hover">
+        <app-guest-grid [items]="items" (selectItemEvent)="selectItem($event)"></app-guest-grid>
+        <!--<table class="table table-hover">
           <thead>
             <tr>
               <th scope="col"> {{ "guest.table.name" | translate }}</th>
@@ -52,11 +53,9 @@
               </td>
             </tr>
           </tbody>
-        </table>
+        </table>-->
       </div>
-      <div class="card-footer text-muted">
-        <app-pagination [totalCount]="25" [currentPage]="2"></app-pagination>
-      </div>
+      <app-pagination [totalCount]="25" [currentPage]="2"></app-pagination>
     </div>
   </div>
 </div>

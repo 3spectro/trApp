@@ -5,18 +5,7 @@
         <h2>Details</h2>
       </div>
       <div class="card">
-        <div class="row">
-          <!--<google-map
-                    [width]="750"
-                    [height]="750"
-                    [center]="center"
-                    [zoom]="zoom">
-              <map-marker *ngFor="let markerPosition of markerPositions"
-                      [position]="markerPosition"
-                      [options]="markerOptions">
-              </map-marker>
-              <map-polyline [path]="vertices"></map-polyline>
-            </google-map>-->
+        <!--<div class="row">
             <google-map height="400px"
                         width="750px"
                         [center]="center"
@@ -25,9 +14,10 @@
               <map-directions-renderer *ngIf="(directionsResults$ | async) as directionsResults"
                                       [directions]="directionsResults"></map-directions-renderer>
             </google-map>
-        </div>
+        </div>-->
         <div class="row">
-          <div class="accordion" id="accordionPanelsStayOpenExample">
+          <div class="accordion" id="detailAccordion">
+            <app-travelers [items]="guests"></app-travelers>
             <app-itinerary></app-itinerary>
           </div>
         </div>

@@ -1,6 +1,9 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { JourneysService } from './../../../shared/services/journeys.service';
+import { GuestsService, IGuest } from './../../../shared/services/guests.service';
+import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, of, take } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { MapDirectionsService } from '@angular/google-maps';
 
@@ -11,7 +14,8 @@ const NAME = 'Event';
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.css']
 })
-export class DetailComponent {
+export class DetailComponent implements OnInit {
+  guests: IGuest[] = [];
 
   /*apiLoaded$!: Observable<boolean>;
 
@@ -56,16 +60,33 @@ export class DetailComponent {
   }*/
   center: google.maps.LatLngLiteral = {lat: 24, lng: 12};
   zoom = 4;
+  id!: number;
 
   readonly directionsResults$: Observable<google.maps.DirectionsResult|undefined>;
 
-  constructor(mapDirectionsService: MapDirectionsService) {
+  constructor(
+    mapDirectionsService: MapDirectionsService,
+    private readonly router: Router,
+    private readonly guestsService: GuestsService,
+    private readonly journeysService: JourneysService
+    ) {
     const request: google.maps.DirectionsRequest = {
       destination: {lat: 37.972359818552, lng: 23.718570144518278},
       origin: {lat: 41.55693994516527, lng: 2.2129758326243265},
       travelMode: google.maps.TravelMode.DRIVING
     };
     this.directionsResults$ = mapDirectionsService.route(request).pipe(map(response => response.result));
+  }
+
+  ngOnInit(): void {
+    if (this.journeysService.id) {
+      this.guestsService.getByJourney$(this.journeysService.id).subscribe(guests => {
+        this.guests = guests.value;
+      });
+      // TODO: forkJoin --> guest for this journey and events for this journey
+    } else {
+      this.router.navigate(['journeys']);
+    }
   }
 
 }

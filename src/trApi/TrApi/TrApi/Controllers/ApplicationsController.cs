@@ -37,7 +37,7 @@ namespace TrApi.Controllers
     [HttpPut]
     public Task<IApiResponse<int>> Put([FromBody] ApplicationModel value)
     {
-      return _applicationQueries.UpdateAsync(value.Id.Value, (ApplicationEntity)value);
+      return _applicationQueries.UpdateAsync(value.Id, (ApplicationEntity)value);
     }
 
     [HttpPost("delete")]

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { IGuest } from './../../../../shared/services/guests.service';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-travelers',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./travelers.component.css']
 })
 export class TravelersComponent implements OnInit {
+  @Input() items: IGuest[] = [];
 
   constructor() { }
 

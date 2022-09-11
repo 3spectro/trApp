@@ -3,7 +3,7 @@ import { IGenericResponse } from './../domain/core.entity';
 import { HttpClient } from '@angular/common/http';
 import { environment } from './../../../environments/environment';
 import { Injectable } from '@angular/core';
-import { Observable, map, forkJoin } from 'rxjs';
+import { Observable, map, forkJoin, ReplaySubject, Subject } from 'rxjs';
 import { JourneysStatus } from '../domain/enums/journeys-status.enum';
 
 const URL = `${environment.apiBaseUrl}Journeys`;
@@ -12,6 +12,8 @@ const URL = `${environment.apiBaseUrl}Journeys`;
   providedIn: 'root'
 })
 export class JourneysService {
+
+  id!: number;
 
   constructor(
     private readonly http: HttpClient,

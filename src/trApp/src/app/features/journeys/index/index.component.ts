@@ -1,3 +1,4 @@
+import { Features } from 'src/app/shared/domain/enums/features.enum';
 import { TranslateApiDataService } from './../../../shared/services/translate-api-data.service';
 import { IGuest } from './../../../shared/services/guests.service';
 import { I201ItemResponse } from './../../../shared/components/side-bar-base/side-bar-base.component';
@@ -19,51 +20,7 @@ const NAME = 'Travel';
   styleUrls: ['./index.component.css']
 })
 export class IndexComponent extends IndexBaseComponent<IJourney> implements OnInit {
-  /*items?: IJourney[] = [];
-  guests?: IGuest[] = [];
-  selectedId!: number;
 
-  constructor(
-    private readonly router: Router,
-    private readonly toastr: ToastrService,
-    private readonly journeysService: JourneysService,
-    private readonly messagesService: MessagesService,
-    private readonly guestsService: GuestsService
-  ) { }
-
-  ngOnInit(): void {
-    forkJoin({
-      travels: this.journeysService.get$(),
-      guests: this.guestsService.get$()
-    }).subscribe(res => {
-      if (res.guests.status) {
-        this.items = res.travels.value;
-      }
-      if (res.guests.status) {
-        this.guests = res.guests.value;
-      }
-    });
-  }
-
-  selectItem(id: number): void {
-    this.selectedId = id;
-  }
-
-  save(item: IJourney): void {
-    this.toastr.success(this.messagesService.getCreateMessage(NAME));
-    this.items?.push(item);
-  }
-
-  delete(): void {
-    this.journeysService.delete$(this.selectedId).subscribe(res => {
-      if (res.status) {
-        this.items = this.items?.filter(x => x.id !== this.selectedId);
-        this.toastr.success(this.messagesService.getDeleteMessage(NAME));
-      }
-    })
-  }
-
-  */
   constructor(
     toastr: ToastrService,
     messagesService: MessagesService,
@@ -73,7 +30,7 @@ export class IndexComponent extends IndexBaseComponent<IJourney> implements OnIn
     private readonly service: JourneysService
   ) {
     super(toastr, messagesService, translateService, translateApiDataService);
-    this.name = 'Journey';
+    this.name = Features.JOURNEY;
     this.getAll$ = this.service.get$();
     this.setGetItemFromId();
     this.getEmpty$ = this.service.getEmpty();
@@ -119,6 +76,7 @@ export class IndexComponent extends IndexBaseComponent<IJourney> implements OnIn
   }
 
   goToDetails(id: number) {
+    this.service.id = id;
     this.router.navigate(['journeys', 'detail']);
   }
 }

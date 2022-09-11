@@ -1,1 +1,15 @@
-<p>travelers works!</p>
+<div class="accordion-item">
+  <h2 class="accordion-header" id="panelsStayOpen-headingTravelers">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTravelers" aria-expanded="false" aria-controls="panelsStayOpen-collapseTravelers">
+      Travelers
+    </button>
+  </h2>
+  <div id="panelsStayOpen-collapseTravelers" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTravelers">
+    <div class="accordion-body">
+      <div class="card-body">
+        <app-guest-grid [items]="items" [enable]="false"></app-guest-grid>
+      </div>
+      <app-pagination [totalCount]="25" [currentPage]="2" *ngIf="false"></app-pagination>
+    </div>
+  </div>
+</div>

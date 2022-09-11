@@ -27,6 +27,12 @@ namespace TrApi.Controllers
       return _queries.GetAllAsync();
     }
 
+    [HttpGet("journey")]
+    public Task<IApiResponse<IEnumerable<GuestModel>>> GetByJourney([FromQuery] int id)
+    {
+      return _queries.GetByJourney(id);
+    }
+
     [HttpPost]
     public Task<IApiResponse<int>> Post([FromBody] GuestModel value)
     {

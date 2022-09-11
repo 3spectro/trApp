@@ -34,6 +34,14 @@ namespace TrApi.Queries.Services
       return res;
     }
 
+    public async Task<IApiResponse<IEnumerable<GuestModel>>> GetByJourney(int journeyId)
+    {
+      var res = IApiResponse<IEnumerable<GuestModel>>.GetDefault(Actions.GET);
+      var list = await _context.Journeys.Where(x => x.Id == journeyId).Select(x => x.Guests).FirstOrDefaultAsync();
+      res.Value = _mapper.Map<IEnumerable<GuestModel>>(list);
+      return res;
+    }
+
     public async Task<IApiResponse<int>> InsertAsync(GuestEntity entity)
     {
       var items = await _context.Guests.Where(item => item.UserId == 3).ToListAsync();
@@ -87,5 +95,6 @@ namespace TrApi.Queries.Services
       }
       return res;
     }
+
   }
 }

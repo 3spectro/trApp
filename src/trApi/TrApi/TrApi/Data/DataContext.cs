@@ -12,6 +12,8 @@ namespace TrApi.Data
     public DbSet<GuestEntity> Guests { get; set; }
     public DbSet<JourneyEntity> Journeys { get; set; }
     public DbSet<EventEntity> Events { get; set; }
+    public DbSet<LocationEntity> Locations { get; set; }
+    
 
   }
 }
