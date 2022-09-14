@@ -1,0 +1,86 @@
+<div class="mb-3">
+  <label for="name" class="form-label">{{ "journey.itinerary.sidebar.type" | translate }}</label>
+  <select class="form-select" aria-label="Default select example" [(ngModel)]="typeSelected">
+    <option [ngValue]="noTypeSelected">.:Select:.</option>
+    <option [ngValue]="type" *ngFor="let type of types">{{type.type}}</option>
+  </select>
+</div>
+<ng-container [ngSwitch]="typeSelected.id">
+  <div *ngSwitchCase="1">
+    <form [formGroup]="travelForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="wayToTravel" class="form-label">{{ "journey.itinerary.sidebar.travel.waytotravel" | translate }}</label>
+        <select class="form-select" aria-label="Default select example" [(ngModel)]="wayToTravelSelected">
+          <option [ngValue]="noWayToTravelSelected">.:Select:.</option>
+          <option [ngValue]="way" *ngFor="let way of waysToTravel">{{way.value}}</option>
+        </select>
+        <div class="valid-feedback" style="display: block;" *ngIf="travelForm.get('wayToTravel')?.touched && travelForm.get('wayToTravel')?.valid">
+          {{ "generics.validations.validfield" | translate }}
+        </div>
+        <div class="invalid-feedback" style="display: block;" *ngIf="travelForm.get('wayToTravel')?.touched && travelForm.get('wayToTravel')?.errors?.['required']">
+          {{ "generics.validations.fieldrequired" | translate }}
+        </div>
+      </div>
+      <div class="mb-3">
+        <div class="ng-autocomplete">
+          <label for="wayToTravel" class="form-label">{{ "journey.itinerary.sidebar.travel.departure" | translate }}</label>
+          <ng-autocomplete
+            [data]="countries"
+            [searchKeyword]="keyword"
+            placeholder="Select country"
+            (selected)='selectEvent($event)'
+            [itemTemplate]="itemTemplate"
+            [notFoundTemplate]="notFoundTemplate">
+          </ng-autocomplete>
+
+          <ng-template #itemTemplate let-item>
+            <a [innerHTML]="item.name"></a>
+          </ng-template>
+
+          <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="notFound"></div>
+          </ng-template>
+        </div>
+      </div>
+      <div class="mb-3">
+        <div class="ng-autocomplete">
+          <label for="wayToTravel" class="form-label">{{ "journey.itinerary.sidebar.travel.departure" | translate }}</label>
+          <ng-autocomplete
+            [data]="cities"
+            [searchKeyword]="keyword"
+            placeholder="Select city"
+            (selected)='selectEvent($event)'
+            [itemTemplate]="itemTemplate"
+            [notFoundTemplate]="notFoundTemplate">
+          </ng-autocomplete>
+
+          <ng-template #itemTemplate let-item>
+            <a [innerHTML]="item.name"></a>
+          </ng-template>
+
+          <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="notFound"></div>
+          </ng-template>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="duartion" class="form-label">{{ "journey.itinerary.sidebar.travel.duartion" | translate }}</label>
+        <input class="form-control" id="duartion" formControlName="duartion" name="duartion">
+        <div class="valid-feedback" style="display: block;" *ngIf="travelForm.get('duartion')?.touched && travelForm.get('duartion')?.valid">
+          {{ "generics.validations.validfield" | translate }}
+        </div>
+      </div>
+    </form>
+  </div>
+  <div *ngSwitchCase="2">
+    <form [formGroup]="accomodationForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        Accomodation form
+      </div>
+    </form>
+  </div>
+</ng-container>
+<div class="text-end">
+  <button type="button" class="btn btn-secondary me-2" (click)="goBack()">{{ "generics.buttons.back" | translate }}</button>
+  <button type="submit" class="btn btn-primary">{{ "generics.buttons.save" | translate }}</button>
+</div>

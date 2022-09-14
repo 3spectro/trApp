@@ -57,7 +57,7 @@ export class SideBarBaseComponent<T> implements OnInit, AfterViewInit, OnChanges
   }
 
   getValidationClass(input: any): string {
-    if (!input.touched || input.disabled) return '';
+    if (!input?.touched || input.disabled) return '';
     return input.invalid ? 'invalid-input' : 'valid-input';
   }
 
@@ -81,7 +81,7 @@ export class SideBarBaseComponent<T> implements OnInit, AfterViewInit, OnChanges
   }
 
   closeSlider() {
-    this.form.reset();
+    // this.form.reset();
     this.renderer.selectRootElement(this.closeButton.nativeElement).click();
   }
 }

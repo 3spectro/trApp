@@ -16,7 +16,7 @@
             {{ "generics.validations.fieldrequired" | translate }}
           </div>
         </div>
-        <div class="mb-3">
+        <!--<div class="mb-3">
           <label for="startDate" class="form-label">{{ "journey.sidebar.startdate" | translate }}</label>
           <div class="form-check form-switch">
             <input class="form-check-input" type="checkbox" role="switch" id="startDateCheck" [(ngModel)]="isStartDateDefined" [ngModelOptions]="{standalone: true}">
@@ -37,7 +37,8 @@
           <div class="valid-feedback" style="display: block;" *ngIf="form.get('endDate')?.touched && form.get('endDate')?.value && form.get('endDate')?.valid">
             {{ "generics.validations.validfield" | translate }}
           </div>
-        </div>
+        </div>-->
+        <app-date-range-form [config]="dateRangeConfig"></app-date-range-form>
         <div class="mb-3">
           <div class="form-check form-switch">
             <input class="form-check-input" type="checkbox" role="switch" id="startDateCheck" [(ngModel)]="iamTravelingAlone" [ngModelOptions]="{standalone: true}">

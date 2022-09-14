@@ -1,0 +1,14 @@
+<div class="offcanvas offcanvas-end" tabindex="-1" id="eventSideBar" aria-labelledby="eventSideBarLabel">
+  <div class="offcanvas-header border-bottom border-secondary">
+    <h4 class="offcanvas-title" id="eventSideBarLabel">{{ "journey.itinerary.entity" | translate }}</h4>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" #close></button>
+  </div>
+  <div class="offcanvas-body ">
+    <div>
+      <app-generic-data *ngIf="showGenericStep" (close)="closeSlider()" (next)="next()"></app-generic-data>
+      <app-specific-data *ngIf="!showGenericStep" (back)="back()" (save)="onSubmit()"></app-specific-data>
+    </div>
+  </div>
+</div>
+
+

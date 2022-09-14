@@ -12,6 +12,8 @@ namespace TrApi.IoC
       CreateMap<GuestEntity, GuestModel>();
       CreateMap<UserEntity, UserModel>();
       CreateMap<JourneyEntity, JourneyModel>();
+      CreateMap<EventEntity, EventModel>();
+      CreateMap<LocationEntity, LocationModel>();
     }
   }
 }

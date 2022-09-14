@@ -14,7 +14,7 @@ namespace TrApi.Data
     public DbSet<EventEntity> Events { get; set; }
     public DbSet<LocationEntity> Locations { get; set; }
     public DbSet<TravelEntity> Travels { get; set; }
-
+    public DbSet<AccomodationEntity> Accomodations { get; set; }
 
   }
 }

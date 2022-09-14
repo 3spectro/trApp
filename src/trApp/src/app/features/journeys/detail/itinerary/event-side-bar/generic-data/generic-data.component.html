@@ -1,0 +1,45 @@
+<app-date-range-form (isInvalid)="isValidDateForm = !$event" #dateRange></app-date-range-form>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div>
+    <div class="mb-3">
+      <label for="wayToTravel" class="form-label">{{ "application.entity" | translate }}</label>
+      <select class="form-select" aria-label="Default select example" id="application" formControlName="application" name="application">
+        <option [ngValue]="noApplicationSelected.id">.:Select:.</option>
+        <option [ngValue]="app.id" *ngFor="let app of applications">{{app.name}}</option>
+      </select>
+      <div class="valid-feedback" style="display: block;" *ngIf="form.get('application')?.touched && form.get('application')?.valid">
+        {{ "generics.validations.validfield" | translate }}
+      </div>
+      <div class="invalid-feedback" style="display: block;" *ngIf="form.get('application')?.touched && form.get('application')?.errors?.['required']">
+        {{ "generics.validations.fieldrequired" | translate }}
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="reservationCode" class="form-label">{{ "journey.itinerary.sidebar.reservationcode" | translate }} </label>
+      <input type="string" class="form-control" id="reservationCode" formControlName="reservationCode" name="reservationCode" [ngClass]="getValidationClass(form.get('reservationCode'))">
+      <div class="valid-feedback" style="display: block;" *ngIf="form.get('reservationCode')?.touched && form.get('reservationCode')?.value && form.get('reservationCode')?.valid">
+        {{ "generics.validations.validfield" | translate }}
+      </div>
+      <div class="invalid-feedback" style="display: block;" *ngIf="form.get('reservationCode')?.touched && form.get('reservationCode')?.errors?.['required']">
+        {{ "generics.validations.fieldrequired" | translate }}
+      </div>
+      <div class="invalid-feedback" style="display: block;" *ngIf="form.get('reservationCode')?.touched && form.get('reservationCode')?.errors?.['invalidDate']">
+        Custom Validator
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="price" class="form-label">{{ "journey.itinerary.sidebar.price" | translate }}</label>
+      <input type="string" class="form-control" id="price" formControlName="price" name="price" [ngClass]="getValidationClass(form.get('price'))">
+      <div class="valid-feedback" style="display: block;" *ngIf="form.get('price')?.touched && form.get('price')?.value && form.get('price')?.valid">
+        {{ "generics.validations.validfield" | translate }}
+      </div>
+      <div class="invalid-feedback" style="display: block;" *ngIf="form.get('price')?.touched && form.get('price')?.errors?.['required']">
+        {{ "generics.validations.fieldrequired" | translate }}
+      </div>
+    </div>
+  </div>
+  <div class="text-end">
+    <button type="button" class="btn btn-secondary me-2" (click)="closeSlider()">{{ "generics.buttons.close" | translate }}</button>
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid || !isValidDateForm">{{ "generics.buttons.next" | translate }}</button>
+  </div>
+</form>

@@ -1,0 +1,37 @@
+<form [formGroup]="datesForm">
+  <div>
+    <div class="row">
+      <div class="mb-3 col-md-6">
+        <label for="dateFrom" class="form-label">{{ "journey.itinerary.sidebar.dateFrom" | translate }}</label>
+        <div class="form-check form-switch" *ngIf="config.allowsDisabledDateFrom">
+          <input class="form-check-input" type="checkbox" role="switch" id="startDateCheck" [(ngModel)]="isStartDateDefined" [ngModelOptions]="{standalone: true}">
+          <label class="form-check-label" for="startDateCheck">{{ "journey.sidebar.startdatedefined" | translate }}</label>
+        </div>
+        <input type="date" class="form-control" id="dateFrom" formControlName="dateFrom" name="dateFrom" [ngClass]="getDateValidationClass(datesForm.get('dateFrom'), datesForm)" [disableControl]="!isStartDateDefined && config.allowsDisabledDateFrom">
+        <div class="valid-feedback" style="display: block;" *ngIf="datesForm.get('dateFrom')?.touched && datesForm.valid">
+          {{ "generics.validations.validfield" | translate }}
+        </div>
+        <div class="invalid-feedback" style="display: block;" *ngIf="datesForm.get('dateFrom')?.touched && datesForm.get('dateFrom')?.errors?.['required']">
+          {{ "generics.validations.fieldrequired" | translate }}
+        </div>
+      </div>
+      <div class="mb-3 col-md-6">
+        <label for="dateTo" class="form-label">{{ "journey.itinerary.sidebar.dateTo" | translate }}</label>
+        <div class="form-check form-switch" *ngIf="config.allowsDisabledDateTo">
+          <input class="form-check-input" type="checkbox" role="switch" id="endDateCheck" [(ngModel)]="isEndDateDefined" [ngModelOptions]="{standalone: true}">
+          <label class="form-check-label" for="endDateCheck">{{ "journey.sidebar.enddatedefined" | translate }}</label>
+        </div>
+        <input type="date" class="form-control" id="dateTo" formControlName="dateTo" name="dateTo" [ngClass]="getDateValidationClass(datesForm.get('dateTo'), datesForm)" [disableControl]="!isEndDateDefined && config.allowsDisabledDateTo">
+        <div class="valid-feedback" style="display: block;" *ngIf="datesForm.get('dateTo')?.touched && datesForm.valid">
+          {{ "generics.validations.validfield" | translate }}
+        </div>
+        <div class="invalid-feedback" style="display: block;" *ngIf="datesForm.get('dateTo')?.touched && datesForm.get('dateTo')?.errors?.['required']">
+          {{ "generics.validations.fieldrequired" | translate }}
+        </div>
+      </div>
+    </div>
+    <div class="invalid-feedback" style="display: block;" *ngIf="datesForm.touched && datesForm.errors?.['invalidRange']">
+      {{ "generics.validations.dateRangeInvalid" | translate }}
+    </div>
+  </div>
+</form>

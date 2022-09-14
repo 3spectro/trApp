@@ -59,13 +59,29 @@
         "sel": "Sel.",
         "name": "Name"
       },
-      "startdatedefined": "Is already defined the start date?",
-      "enddatedefined": "Is already defined the end date?",
+      "startdatedefined": "Is defined?",
+      "enddatedefined": "Is defined?",
       "travelginalone": "I'm traveling alone",
       "validations": {
         "travelers": "You need to add at less one traveler to your journey"
       }
-		}
+		},
+    "itinerary": {
+      "entity": "Event",
+      "sidebar": {
+        "type": "Type",
+        "dateFrom": "Date From",
+        "dateTo": "Date To",
+        "price": "Price",
+        "reservationcode": "Reservation Code",
+        "travel": {
+          "waytotravel": "Way to Travel",
+          "departure": "Departure",
+          "arrival": "Arrival",
+          "duartion": "Duration (mins.)"
+        }
+      }
+    }
 	},
 	"generics": {
 		"confirmation": {
@@ -76,11 +92,14 @@
 		},
     "validations": {
       "fieldrequired": "This field is required",
-      "validfield": "Looks good!"
+      "validfield": "Looks good!",
+      "dateRangeInvalid": "Please add a valid from and to date!"
     },
     "buttons": {
       "save": "Save",
-      "close": "Close"
+      "close": "Close",
+      "next": "Next",
+      "back": "Back"
     }
 	}
 }

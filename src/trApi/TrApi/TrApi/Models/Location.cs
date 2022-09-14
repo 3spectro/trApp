@@ -29,7 +29,19 @@ namespace TrApi.Models
     public int Id { get; set; }
     public string? Country { get; set; }
     public string? City { get; set; }
-    public decimal Latitude { get; set; }
-    public decimal Length { get; set; }
+    public decimal? Latitude { get; set; }
+    public decimal? Length { get; set; }
+
+    static public explicit operator LocationEntity(LocationModel value)
+    {
+      var guests = new List<GuestEntity>();
+      return new LocationEntity
+      {
+        Country = value.Country,
+        City = value.City,
+        Latitude = value.Latitude.HasValue ? value.Latitude.Value : 0,
+        Length = value.Length.HasValue ? value.Length.Value : 0
+      };
+    }
   }
 }

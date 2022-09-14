@@ -8,6 +8,7 @@ import { JourneysService, IJourney } from './../../../shared/services/journeys.s
 import { Observable } from 'rxjs';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Component, Renderer2 } from '@angular/core';
+import { IDateRangeFormSettings } from 'src/app/shared/components/date-range-form/date-range-form.component'
 
 @Component({
   selector: 'app-journey-side-bar',
@@ -22,6 +23,13 @@ export class JouernySideBarComponent extends SideBarBaseComponent<IJourney> {
   isStartDateDefined: boolean = true;
   isEndDateDefined: boolean = true;
   iamTravelingAlone: boolean = true;
+
+  dateRangeConfig: IDateRangeFormSettings = {
+    allowsDisabledDateFrom: true,
+    textDisabledDateFrom: 'Test',
+    allowsDisabledDateTo: true,
+    textDisabledDateTo: 'string;'
+  }
 
   constructor(
     renderer: Renderer2,

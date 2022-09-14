@@ -37,29 +37,41 @@ namespace TrApi.Models
     public string? ReservationCode { get; set; }
   }
 
-  public class TravelEntity : IEntity
+  public class EventModel : IModel
   {
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
+    public int JourneyId { get; set; }
+    public string? Type { get; set; }
+    public int ApplicationId { get; set; }
+    public DateTime? DateFrom { get; set; }
+    public DateTime? DateTo { get; set; }
+    public decimal Price { get; set; }
+    public string? ReservationCode { get; set; }
 
-    [Required]
-    public int EventId { get; set; }
-    [ForeignKey("EventId")]
-    public virtual EventEntity? Event { get; set; }
+    static public explicit operator EventEntity(EventModel value)
+    {
+      return new EventEntity
+      {
+        JourneyId = value.JourneyId,
+        Type = value.Type,
+        ApplicationId = value.ApplicationId,
+        DateFrom = value.DateFrom,
+        DateTo = value.DateTo,
+        Price = value.Price,
+        ReservationCode = value.ReservationCode,
+      };
+    }
+  }
 
-    [Required]
-    public string? WayToTravel { get; set; }
-
-    [Required]
-    public int DepartureId { get; set; }
-    [ForeignKey("DepartureId")]
-    public virtual LocationEntity? Departure { get; set; }
-
-    [Required]
-    public int ArriveId { get; set; }
-    [ForeignKey("ArriveId")]
-    public virtual LocationEntity? Arrive { get; set; }
-    public int? Duration { get; set; }
+  public class EventQueryModel 
+  {
+    public int Id { get; set; }
+    public int Type { get; set; }
+    public string? SubType { get; set; }
+    public DateTime? DateFrom { get; set; }
+    public DateTime? DateTo { get; set; }
+    public decimal Price { get; set; }
+    public string? Application { get; set; }
+    public string? ReservationCode { get; set; }
   }
 }

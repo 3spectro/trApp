@@ -80,7 +80,8 @@
     },
     "buttons": {
       "save": "Guardar",
-      "close": "Cerrar"
+      "close": "Cerrar",
+      "next": "Siguiente"
     }
 	}
 }

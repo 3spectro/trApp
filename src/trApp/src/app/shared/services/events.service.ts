@@ -1,3 +1,5 @@
+import { WayToTravel } from './../domain/enums/way-to-travel.enum';
+import { EventType } from './../domain/enums/event-type.enum';
 import { IApiResponse } from './../domain/core.entity';
 import { Observable, timer, of } from 'rxjs';
 import { LoadingBarService } from './loading-bar.service';
@@ -12,6 +14,7 @@ import { TravelType } from '../domain/enums/travel-type.enum';
 export class EventsService {
 
   items: IEvent[] = []
+  event!: IEvent;
 
   constructor(
     private readonly loadingBarService: LoadingBarService
@@ -133,11 +136,42 @@ export class EventsService {
     response.value = item;
     return of(response);
   }
+
+  getEventTypes(): IEventType[] {
+    return [
+      {
+        id: EventType.TRAVEL,
+        type: 'Travel'
+      },
+      {
+        id: EventType.ACCOMODATION,
+        type: 'Accomodation'
+      },
+    ]
+  }
+
+  getWayToTravel(): IWayToTravel[] {
+    return [
+      {
+        code: WayToTravel.FLY,
+        value: WayToTravel.FLY,
+      },
+      {
+        code: WayToTravel.BUS,
+        value: WayToTravel.BUS,
+      },
+      {
+        code: WayToTravel.CAR,
+        value: WayToTravel.CAR,
+      }
+    ]
+  }
+
 }
 
 export interface IEvent {
   id: number;
-  type: number;
+  type?: number;
   subtype?: string;
   app: IApplication;
   dateFrom: Date;
@@ -191,4 +225,14 @@ export class Travel implements IEvent {
   getDescription(): string {
     return `Fly from ${this.departure} to ${this.arrive}`;
   }
+}
+
+export interface IEventType {
+  id: number;
+  type: string;
+}
+
+export interface IWayToTravel {
+  code: string;
+  value: string;
 }

@@ -13,6 +13,10 @@ import { TravelersComponent } from './detail/travelers/travelers.component';
 import { ReservationCodeComponent } from './modals/reservation-code/reservation-code.component';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { HttpClientJsonpModule, HttpClientModule } from '@angular/common/http';
+import { EventSideBarComponent } from './detail/itinerary/event-side-bar/event-side-bar.component';
+import { GenericDataComponent } from './detail/itinerary/event-side-bar/generic-data/generic-data.component';
+import { SpecificDataComponent } from './detail/itinerary/event-side-bar/specific-data/specific-data.component';
+import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 
 
 @NgModule({
@@ -23,7 +27,10 @@ import { HttpClientJsonpModule, HttpClientModule } from '@angular/common/http';
     HeaderComponent,
     ItineraryComponent,
     TravelersComponent,
-    ReservationCodeComponent
+    ReservationCodeComponent,
+    EventSideBarComponent,
+    GenericDataComponent,
+    SpecificDataComponent
   ],
   imports: [
     CommonModule,
@@ -34,7 +41,8 @@ import { HttpClientJsonpModule, HttpClientModule } from '@angular/common/http';
     GoogleMapsModule,
     HttpClientModule,
     HttpClientJsonpModule,
-    FormsModule
+    FormsModule,
+    AutocompleteLibModule
   ]
 })
 export class JourneysModule { }

@@ -1,3 +1,4 @@
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DisableControlDirective } from './../directives/disabled-control.directive';
 import { TranslateModule } from '@ngx-translate/core';
 import { IndexBaseComponent } from '../components/index-base/index-base.component';
@@ -7,6 +8,7 @@ import { ConfirmationComponent } from '../components/modals/confirmation/confirm
 import { PaginationComponent } from '../components/pagination/pagination.component';
 import { SideBarBaseComponent } from '../components/side-bar-base/side-bar-base.component';
 import { GuestGridComponent } from '../components/guest-grid/guest-grid.component';
+import { DateRangeFormComponent } from '../components/date-range-form/date-range-form.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +17,7 @@ import { GuestGridComponent } from '../components/guest-grid/guest-grid.componen
     IndexBaseComponent,
     SideBarBaseComponent,
     GuestGridComponent,
+    DateRangeFormComponent,
     DisableControlDirective
   ],
   exports: [
@@ -23,12 +26,15 @@ import { GuestGridComponent } from '../components/guest-grid/guest-grid.componen
     IndexBaseComponent,
     SideBarBaseComponent,
     GuestGridComponent,
+    DateRangeFormComponent,
     DisableControlDirective,
     TranslateModule,
   ],
   imports: [
     CommonModule,
-    TranslateModule
+    TranslateModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [],
 })

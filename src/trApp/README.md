@@ -48,3 +48,7 @@ https://github.com/angular/components/tree/main/src/google-maps#readme
 Translation
 -----------
 https://github.com/ngx-translate/core
+
+Auto Complete
+-----------
+https://www.npmjs.com/package/angular-ng-autocomplete
